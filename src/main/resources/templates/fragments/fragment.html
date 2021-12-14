@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+                      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>"Квинс-арго"ЕООД</title>
+    <link rel="stylesheet" th:href="@{/css/reset-css.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nav-css.css}"/>
+
+</head>
+<body>
+<header  th:fragment="nav">
+    <div sec:authorize="isAuthenticated()" class="topnavv" id="myTopnav">
+        <a  class="nav-link text-white active h5" th:href="@{/home}" sec:authorize="isAuthenticated()">Квинс агро ЕООД</a>
+        <a  class="nav-link text-white  h5" th:href="@{/admin/all-users}" sec:authorize="hasRole('ADMIN')">Админ панел</a>
+        <a  class="nav-link text-white  h5" th:href="@{/products/add}" sec:authorize="hasRole('ADMIN')">Добавяне на яйца</a>
+        <a  class="nav-link text-white h5" th:href="@{/hales/add}" sec:authorize="hasRole('ADMIN')">Добавяне на кокошки</a>
+        <a  class="nav-link text-white  h5" th:href="@{/hales/delete}" sec:authorize="hasRole('ADMIN')">Оптисване кокошки</a>
+        <a  class="nav-link text-white  h5" th:href="@{/cartons/add-cartons}" sec:authorize="hasRole('ADMIN')">Добавяне на амбалаж</a>
+        <a  class="nav-link text-white  h5" th:href="@{/clients/add-client}" sec:authorize="hasRole('ADMIN')">Добавяне на клиент</a>
+        <a  class="nav-link text-white  h5" th:href="@{/egg/sells}" sec:authorize="hasRole('ADMIN')">Продажби</a>
+
+        <div class="dropdownn">
+            <button class="dropbtnn">Справки
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content">
+                <a  th:href="@{/allCountTableByCategory}" sec:authorize="isAuthenticated()">Наличност</a>
+                <a  th:href="@{/count-hens-now}" sec:authorize="isAuthenticated()">Наличност кокошки</a>
+                <a   th:href="@{/count-cartons-now}" sec:authorize="isAuthenticated()">Наличност амбалаж</a>
+                <a   th:href="@{/percentage-table}" sec:authorize="isAuthenticated()">Процентна таблица</a>
+                <a   th:href="@{/egg/all-sells}" sec:authorize="isAuthenticated()">Всички продажби</a>
+            </div>
+        </div>
+        <a  class="nav-link text-white  h5" th:href="@{/users/logout}" sec:authorize="isAuthenticated()">Излез</a>
+    </div>
+</header>
+<footer  th:fragment="footer" class="footer bg-transparent  py-2">
+    <div class="container-fluid text-center">
+        <div class="footer-background h5 text-white">
+            &copy; "Квинс-арго" ЕООД.
+        </div>
+    </div>
+</footer>
+</body>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<head th:replace="fragments/fragment::head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>"Квинс-арго"ЕООД</title>
+    <link rel="stylesheet" href="/css/reset-css.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:replace="fragments/fragment::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Редактиране на роля</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+    <form class="mx-auto w-25 bg-blur rounded" th:object="${user}" th:method="POST" th:action="@{/admin/{id}/edit(id=${user.getId()})}">
+        <h4 class="ps-5 text-white-50 text-center" th:text="*{'Профил на ' + getFirstName()+' '+getLastName()}">Имена на потребителя</h4>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label class="h4 mb-2">Нова роля</label>
+            </div>
+            <select th:field="${userRegistrationBindingModel.role}" th:errorclass="bg-danger" class="browser-default custom-select" id="category1" name="category">
+                <option value="">Select category</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.UserRoleEnum).values()}"
+                        th:text="${c}" th:value="${c}">Избери роля</option>
+            </select>
+
+        </div>
+
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Редактирай</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+</body>
+</html>
