@@ -38,6 +38,7 @@ public class CartonAddBindingModel {
         this.categoryBaseEnum = categoryBaseEnum;
     }
 
+    @NotNull(message = "Cannot be empty")
     @Positive(message = "Must be positive number")
     public Long getCountOfCartons() {
         return countOfCartons;
@@ -47,6 +48,7 @@ public class CartonAddBindingModel {
         this.countOfCartons = countOfCartons;
     }
 
+    @NotNull(message = "Cannot be empty")
     @PastOrPresent(message = "Date cannot be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     public LocalDateTime getDate() {

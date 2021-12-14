@@ -21,7 +21,7 @@ public class HensAddBindingModel {
     public HensAddBindingModel() {
     }
 
-
+    @NotNull(message = "Cannot be empty")
     public CategoryHaleEnum getCategoryHale() {
         return categoryHale;
     }
@@ -29,6 +29,7 @@ public class HensAddBindingModel {
     public void setCategoryHale(CategoryHaleEnum categoryHale) {
         this.categoryHale = categoryHale;
     }
+
 
     @Positive(message = "Must be positive number")
     public Long getCountOfHens() {
@@ -47,6 +48,7 @@ public class HensAddBindingModel {
         this.countOfDelHens = countOfDelHens;
     }
 
+    @NotNull(message = "Cannot be empty")
     @PastOrPresent(message = "Date cannot be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate getCreated_date() {

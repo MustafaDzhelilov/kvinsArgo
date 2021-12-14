@@ -42,7 +42,7 @@ public class Sells extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category",nullable = false)
+    @Column(name = "egg",nullable = false)
     public CategoryEggEnum getEgg() {
         return egg;
     }
