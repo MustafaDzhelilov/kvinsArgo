@@ -25,6 +25,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "base",nullable = false)
     public CategoryBaseEnum getBase() {
         return base;
     }
@@ -33,7 +34,7 @@ public class Egg extends BaseEntity{
         this.base = base;
     }
 
-    @Column(name = "countOfEgg")
+    @Column(name = "countOfEgg",nullable = false)
     public Long getCountOfEgg() {
         return countOfEgg;
     }
@@ -43,6 +44,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "category",nullable = false)
     public CategoryEggEnum getEgg() {
         return egg;
     }
@@ -52,6 +54,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "cartons",nullable = false)
     public CategoryCartonsEnum getCartons() {
         return cartons;
     }
@@ -61,6 +64,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "hale",nullable = false)
     public CategoryHaleEnum getHale() {
         return hale;
     }
@@ -70,7 +74,7 @@ public class Egg extends BaseEntity{
     }
 
 
-    @Column(name = "addDate")
+    @Column(name = "addDate",nullable = false)
     public LocalDate getAddDate() {
         return addDate;
     }

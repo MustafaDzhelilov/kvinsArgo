@@ -20,7 +20,7 @@ public class Client extends BaseEntity{
         this.sells = new HashSet<>();
     }
 
-    @Column(name = "bulstat")
+    @Column(name = "bulstat",nullable = false,unique = true)
     public Long getBulstat() {
         return bulstat;
     }
@@ -29,7 +29,7 @@ public class Client extends BaseEntity{
         this.bulstat = bulstat;
     }
 
-    @Column(name = "name", columnDefinition = "TEXT")
+    @Column(name = "name", columnDefinition = "TEXT", nullable = false)
     public String getName() {
         return name;
     }
@@ -38,7 +38,7 @@ public class Client extends BaseEntity{
         this.name = name;
     }
 
-    @Column(name = "address", columnDefinition = "TEXT")
+    @Column(name = "address", columnDefinition = "TEXT", nullable = false)
     public String getAdress() {
         return adress;
     }
@@ -47,7 +47,7 @@ public class Client extends BaseEntity{
         this.adress = adress;
     }
 
-    @Column(name = "telephone")
+    @Column(name = "telephone", nullable = false)
     public Long getTelephone() {
         return telephone;
     }
@@ -57,7 +57,7 @@ public class Client extends BaseEntity{
     }
 
 
-    @Column(name = "firmName", columnDefinition = "TEXT")
+    @Column(name = "firmName", columnDefinition = "TEXT", nullable = false,unique = true)
     public String getFirmName() {
         return firmName;
     }
@@ -68,7 +68,7 @@ public class Client extends BaseEntity{
     }
 
 
-    @Column(name = "dds")
+    @Column(name = "dds", nullable = false, unique = true)
     public Long getDds() {
         return dds;
     }

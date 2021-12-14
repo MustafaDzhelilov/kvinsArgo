@@ -23,6 +23,7 @@ public class Hale extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "hale",nullable = false)
     public CategoryHaleEnum getHale() {
         return hale;
     }
@@ -31,7 +32,7 @@ public class Hale extends BaseEntity{
         this.hale = hale;
     }
 
-    @Column(name = "countOfHens")
+    @Column(name = "countOfHens",nullable = false)
     public Long getCountOfHens() {
         return countOfHens;
     }
@@ -41,7 +42,7 @@ public class Hale extends BaseEntity{
     }
 
 
-    @Column(name = "countOfDelHens")
+    @Column(name = "countOfDelHens",nullable = false)
     public Long getCountOfDelHens() {
         return countOfDelHens;
     }
@@ -50,7 +51,7 @@ public class Hale extends BaseEntity{
         this.countOfDelHens = countOfDelHens;
     }
 
-    @Column(name = "created")
+    @Column(name = "created",nullable = false)
     public LocalDate getCreated() {
         return created;
     }

@@ -23,6 +23,7 @@ public class Sells extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "base",nullable = false)
     public CategoryBaseEnum getBase() {
         return base;
     }
@@ -31,7 +32,7 @@ public class Sells extends BaseEntity{
         this.base = base;
     }
 
-    @Column(name = "countOfEgg")
+    @Column(name = "countOfEgg",nullable = false)
     public Long getCountOfEgg() {
         return countOfEgg;
     }
@@ -41,6 +42,7 @@ public class Sells extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "category",nullable = false)
     public CategoryEggEnum getEgg() {
         return egg;
     }
@@ -50,6 +52,7 @@ public class Sells extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "cartons",nullable = false)
     public CategoryCartonsEnum getCartons() {
         return cartons;
     }
@@ -58,7 +61,7 @@ public class Sells extends BaseEntity{
         this.cartons = cartons;
     }
 
-    @Column(name = "addDate")
+    @Column(name = "addDate", nullable = false)
     public LocalDate getAddDate() {
         return addDate;
     }
@@ -76,7 +79,7 @@ public class Sells extends BaseEntity{
         this.client = client;
     }
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     public double getPrice() {
         return price;
     }

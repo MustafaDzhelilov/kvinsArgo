@@ -20,6 +20,7 @@ public class Cartons  extends  BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "cartons",nullable = false)
     public CategoryCartonsEnum getCartons() {
         return cartons;
     }
@@ -29,6 +30,7 @@ public class Cartons  extends  BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "base",nullable = false)
     public CategoryBaseEnum getBase() {
         return base;
     }
@@ -37,7 +39,7 @@ public class Cartons  extends  BaseEntity{
         this.base = base;
     }
 
-    @Column(name = "count")
+    @Column(name = "count", nullable = false)
     public Long getCount() {
         return count;
     }
@@ -46,7 +48,7 @@ public class Cartons  extends  BaseEntity{
         this.count = count;
     }
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     public LocalDateTime getDate() {
         return date;
     }

@@ -217,7 +217,7 @@
         <td th:text="*{getFirstName()}"></td>
         <td th:text="*{getLastName()}"></td>
         <td th:text="*{getEmail()}"></td>
-        <td th:text="${u.roles}"></td>
+        <td  th:text="${u.roles}"></td>
         <td> <div class="form-group" >
             <form th:action="@{/admin/{id}/edit(id=${u.getId()})}" th:method="GET">
                 <button type="submit" class="h4 mb-2">Редактирай</button>
