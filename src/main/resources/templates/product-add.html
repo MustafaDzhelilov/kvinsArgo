@@ -7,7 +7,7 @@
 <body>
 <header th:replace="fragments/fragment::nav"></header>
 <main>
-    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Add product</span></h1>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Добавяне на яйца</span></h1>
     <hr class="hr-3 w-25 bg-white"/>
     <form class="mx-auto w-25 bg-blur rounded" th:object="${eggAddBindingModel}" th:method="POST" th:action="@{/products/add}">
 
@@ -16,7 +16,7 @@
                 <label for="category" class="h4 mb-2">Категория</label>
             </div>
             <select th:field="*{categoryEgg}" th:errorclass="bg-danger" class="browser-default custom-select" id="category" name="category">
-                <option value="">Select category</option>
+                <option value="">Избери категория</option>
 				<option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryEggEnum).values()}"
                         th:text="${c}" th:value="${c}">XL</option>
             </select>
@@ -28,7 +28,7 @@
                 <label for="category" class="h4 mb-2">Вид амбалаж</label>
             </div>
             <select th:field="*{categoryCartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCartons" name="categoryCartons">
-                <option value="">Select category</option>
+                <option value="">Избери амбалаж</option>
                 <option th:each="a : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
                         th:text="${a}" th:value="${a}">CARTONS_120</option>
             </select>
@@ -40,7 +40,7 @@
                 <label for="category" class="h4 mb-2">База</label>
             </div>
             <select th:field="*{categoryBase}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryBase" name="categoryBase">
-                <option value="">Select category</option>
+                <option value="">Избери база</option>
                 <option th:each="b : ${T(com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum).values()}"
                         th:text="${b}" th:value="${b}">ГОРНА</option>
             </select>
@@ -52,7 +52,7 @@
                 <label for="categoryHale" class="h4 mb-2">Хале</label>
             </div>
             <select th:field="*{categoryHale}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryHale" name="categoryHale">
-                <option value="">Select category</option>
+                <option value="">Избери хале</option>
                 <option th:each="h : ${T(com.example.projectsoftuni.model.entity.enums.CategoryHaleEnum).values()}"
                         th:text="${h}" th:value="${h}">FIRST</option>
             </select>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning  mb-3" value="Register">Add product</button>
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Добави</button>
         </div>
     </form>
 </main>

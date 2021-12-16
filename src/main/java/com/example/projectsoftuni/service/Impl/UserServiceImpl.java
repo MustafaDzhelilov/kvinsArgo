@@ -146,7 +146,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserViewModel> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return  users.stream().map(user -> modelMapper.map(user, UserViewModel.class)).collect(Collectors.toList());
+        return  users.stream().map(user ->{
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.setFirstName(user.getFirstName());
+            userViewModel.setUsername(user.getUsername());
+            userViewModel.setEmail(user.getEmail());
+            userViewModel.setId(user.getId());
+            userViewModel.setLastName(user.getLastName());
+            for (UserRoleEntity a: user.getRoles()) {
+                userViewModel.setRoles(a.getRole().name());
+            }
+
+            return userViewModel;
+
+        }).collect(Collectors.toList());
     }
     //TODO map rolq
 }

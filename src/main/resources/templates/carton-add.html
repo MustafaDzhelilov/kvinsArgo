@@ -22,7 +22,7 @@
                 <label for="categoryCarton" class="h4 mb-2">Вид амбалаж</label>
             </div>
             <select th:field="*{categoryCartonsEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCarton" name="category">
-                <option value="">Select category</option>
+                <option value="">Избери вид амбалаж</option>
                 <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
                         th:text="${c}" th:value="${c}">CARTONS_120</option>
             </select>
@@ -34,7 +34,7 @@
                 <label for="categoryBase" class="h4 mb-2">База</label>
             </div>
             <select th:field="*{categoryBaseEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryBase" name="category">
-                <option value="">Select category</option>
+                <option value="">Избери база</option>
                 <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum).values()}"
                         th:text="${c}" th:value="${c}">UPPER</option>
             </select>
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="button-holder d-flex justify-content-center">
-                    <button type="submit" class="btn btn-warning  mb-3" value="Register">Add cartons</button>
+                    <button type="submit" class="btn btn-warning  mb-3" value="Register">Добави</button>
                 </div>
             </form>
         </main>
