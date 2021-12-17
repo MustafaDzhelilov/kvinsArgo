@@ -196,14 +196,6 @@
                 <a sec:authorize="isAuthenticated()"  th:href="@{/egg/all-sells}">Всички продажби</a>
             </div>
         </div>
-        <div class="dropdownn">
-            <button class="dropbtnn">Админ панел
-                <i class="fa fa-caret-downn"></i>
-            </button>
-            <div class="dropdownn-content">
-                <a  th:href="@{/admin/all-users}" sec:authorize="isAuthenticated()">Всички потребители</a>
-            </div>
-        </div>
         <a  class="nav-link text-white  h5" th:href="@{/users/logout}" sec:authorize="isAuthenticated()">Излез</a>
     </div>
 </header>
