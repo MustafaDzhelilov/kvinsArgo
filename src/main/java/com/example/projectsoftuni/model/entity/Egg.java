@@ -44,7 +44,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category",nullable = false)
+    @Column(name = "egg",nullable = false)
     public CategoryEggEnum getEgg() {
         return egg;
     }
@@ -64,7 +64,7 @@ public class Egg extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "hale",nullable = false)
+    @Column(name = "hale")
     public CategoryHaleEnum getHale() {
         return hale;
     }
