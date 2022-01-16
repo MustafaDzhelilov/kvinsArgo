@@ -333,6 +333,15 @@
             }
         }
     }
+
+    $(document).ready(function(){
+        setInterval(function(){ reload_page(); },60*60);
+    });
+
+    function reload_page()
+    {
+        window.location.reload(true);
+    }
 </script>
 
 </body>

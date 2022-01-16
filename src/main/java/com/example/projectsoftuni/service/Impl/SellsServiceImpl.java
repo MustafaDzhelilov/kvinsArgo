@@ -254,6 +254,7 @@ public class SellsServiceImpl implements SellsService {
             egg.setCountOfEgg(-sellCount);
 
         }
+        System.out.println();
 
         if(isZero == 1) {
             eggAddRepository.save(egg);

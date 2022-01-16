@@ -2,6 +2,8 @@ package com.example.projectsoftuni.model.binding;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class ClientAddBindingModel {
 
@@ -18,6 +20,7 @@ public class ClientAddBindingModel {
 
     @NotNull(message = "Cannot be empty")
     @Column(columnDefinition = "TEXT")
+    @Size(min = 3, max = 20, message = "Username length must between 3 and 20")
     public String getName() {
         return name;
     }
@@ -28,6 +31,7 @@ public class ClientAddBindingModel {
 
     @NotNull(message = "Cannot be empty")
     @Column(columnDefinition = "TEXT")
+    @Size(min = 3, max = 20, message = "Username length must between 3 and 20")
     public String getFirmName() {
         return firmName;
     }
@@ -37,6 +41,7 @@ public class ClientAddBindingModel {
     }
 
     @NotNull(message = "Cannot be empty")
+    @Positive(message = "Must be positive number")
     public String getBulstat() {
         return bulstat;
     }
@@ -47,6 +52,7 @@ public class ClientAddBindingModel {
 
     @NotNull(message = "Cannot be empty")
     @Column(columnDefinition = "TEXT")
+    @Size(min = 3, max = 20, message = "Username length must between 3 and 20")
     public String getAddress() {
         return address;
     }
@@ -65,6 +71,8 @@ public class ClientAddBindingModel {
     }
 
     @NotNull(message = "Cannot be empty")
+    @Size(min = 3, max = 20, message = "Username length must between 3 and 20")
+    @Positive(message = "Must be positive number")
     public String getDds() {
         return dds;
     }

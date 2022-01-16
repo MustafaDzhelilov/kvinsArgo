@@ -45,7 +45,7 @@ public class CartonAddServiceImpl implements CartonAddService {
     @Override
     public Long getCountOfCarton180FromBaseUpper() {
         return cartonAddRepository.findAllByBaseAndCartons(CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180)
-                .stream().map(Cartons::getCount).reduce(Long::sum).orElse(0L);
+                .stream().map(Cartons::getCount).reduce(Long::min).orElse(0L);
     }
 
     @Override

@@ -25,7 +25,6 @@ public class Sells extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "base",nullable = false)
-    @NotNull(message = "Cannot be empty")
     public CategoryBaseEnum getBase() {
         return base;
     }
@@ -35,7 +34,6 @@ public class Sells extends BaseEntity{
     }
 
     @Column(name = "countOfEgg",nullable = false)
-    @NotNull(message = "Cannot be empty")
     public Long getCountOfEgg() {
         return countOfEgg;
     }
@@ -56,7 +54,6 @@ public class Sells extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "cartons",nullable = false)
-    @NotNull(message = "Cannot be empty")
     public CategoryCartonsEnum getCartons() {
         return cartons;
     }

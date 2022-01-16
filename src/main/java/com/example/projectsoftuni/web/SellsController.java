@@ -63,6 +63,7 @@ public class SellsController {
 
             return "redirect:sell-eggs";
         }
+        System.out.println();
 
         sellsService.addSell(modelMapper.map(sellBindingModel, SellsServiceModel.class));
 
@@ -87,7 +88,9 @@ public class SellsController {
 
         int sizeOfList = sells.size();
 
-        Sells price = sells.get(sizeOfList -1 );
+        Sells price = sells.get(sizeOfList - 1);
+
+        System.out.println();
 
         double totalSum = ((price.getPrice() * price.getCountOfEgg()) * 20) / 100 + (price.getCountOfEgg() * price.getPrice());
 
