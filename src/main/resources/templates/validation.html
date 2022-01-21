@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment::head"></head>
+<meta charset="UTF-8"/>
+<body>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Клиента връща ли палети ?</span></h1>
+    <div>
+
+
+        <form th:method="GET" th:action="@{/egg/returned-pallets}" >
+            <div class="button-holder d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning  mb-3" value="Register">ДА</button>
+            </div>
+        </form>
+
+        <form th:method="GET" th:action="@{/egg/sells}">
+            <div class="button-holder d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning  mb-3" value="Register">НЕ</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

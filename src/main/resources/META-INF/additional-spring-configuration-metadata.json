@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.mvc.hiddenmethod.filter.server.error.whitelabel.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.mvc.hiddenmethod.filter.server.error.whitelabel.enabled."
+    },
+    {
+      "name": "spring.mvc.hiddenmethod.filter.server.error.whitelabel.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.mvc.hiddenmethod.filter.server.error.whitelabel.enabled."
+    }
+  ] }
