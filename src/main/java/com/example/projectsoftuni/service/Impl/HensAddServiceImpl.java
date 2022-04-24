@@ -109,7 +109,7 @@ public class HensAddServiceImpl implements HensAddService {
         }else if(hale.getHale().equals(CategoryHaleEnum.FOURTH)){
             hale.setCountOfHens(getCountOfHensFourthLast() - hensServiceModel.getCountOfDelHens());
         }else if(hale.getHale().equals(CategoryHaleEnum.FIFTH)){
-            hale.setCountOfHens(getCountOfHensFifth() - hensServiceModel.getCountOfDelHens());
+            hale.setCountOfHens(getCountOfHensFifthLast() - hensServiceModel.getCountOfDelHens());
         }else if(hale.getHale().equals(CategoryHaleEnum.SIXTH)){
             hale.setCountOfHens(getCountOfHensSixthLast() - hensServiceModel.getCountOfDelHens());
         }else if(hale.getHale().equals(CategoryHaleEnum.SEVENTH)){

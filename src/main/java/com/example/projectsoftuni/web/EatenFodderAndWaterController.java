@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 @Controller
@@ -51,9 +52,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDay", LocalDate.now());
         model.addAttribute("currentDayKgOfFodder", currentDayKgOfFodder);
         model.addAttribute("percentCurrentDay"
-                , String.format("%.2f" + " гр.",percentCurrentDay));
+                , String.format("%.4f" + " гр.",percentCurrentDay));
         model.addAttribute("percentCurrentDayWater"
-                , String.format("%.2f" + " мл.", percentCurrentDayWater));
+                , String.format("%.4f" + " мл.", percentCurrentDayWater));
 
         // За текущия ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2 = eatenFodderAndWaterService.findLastRecordsByCategoryHale2();
@@ -66,9 +67,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2", currentDayKgOfFodderHale2);
         model.addAttribute("percentCurrentDayHale2"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2));
         model.addAttribute("percentCurrentDayWaterHale2"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2));
 
         // За текущия ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3 = eatenFodderAndWaterService.findLastRecordsByCategoryHale3();
@@ -81,9 +82,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3", currentDayKgOfFodderHale3);
         model.addAttribute("percentCurrentDayHale3"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3));
         model.addAttribute("percentCurrentDayWaterHale3"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3));
 
         // За текущия ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4 = eatenFodderAndWaterService.findLastRecordsByCategoryHale4();
@@ -96,9 +97,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4", currentDayKgOfFodderHale4);
         model.addAttribute("percentCurrentDayHale4"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4));
         model.addAttribute("percentCurrentDayWaterHale4"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4));
 
         // За текущия - 1 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinOneDay = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinOne();
@@ -112,9 +113,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinOne", LocalDate.now().minusDays(1));
         model.addAttribute("currentDayKgOfFodderMinOne", currentDayKgOfFodderMinOne);
         model.addAttribute("percentCurrentDayMinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinOne));
         model.addAttribute("percentCurrentDayWaterMinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinOne));
 
         // За текущия -1 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinOne();
@@ -127,9 +128,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinOne", currentDayKgOfFodderHale2MinOne);
         model.addAttribute("percentCurrentDayHale2MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinOne));
         model.addAttribute("percentCurrentDayWaterHale2MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinOne));
 
         // За текущия -1 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinOne();
@@ -142,9 +143,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinOne", currentDayKgOfFodderHale3MinOne);
         model.addAttribute("percentCurrentDayHale3MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinOne));
         model.addAttribute("percentCurrentDayWaterHale3MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinOne));
 
         // За текущия -1 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinOne();
@@ -157,9 +158,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinOne", currentDayKgOfFodderHale4MinOne);
         model.addAttribute("percentCurrentDayHale4MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinOne));
         model.addAttribute("percentCurrentDayWaterHale4MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinOne));
 
         // За текущия - 2 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinTwo();
@@ -173,9 +174,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinTwo", LocalDate.now().minusDays(2));
         model.addAttribute("currentDayKgOfFodderMinTwo", currentDayKgOfFodderMinTwo);
         model.addAttribute("percentCurrentDayMinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinTwo));
         model.addAttribute("percentCurrentDayWaterMinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinTwo));
 
         // За текущия -2 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinTwo();
@@ -188,9 +189,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinTwo", currentDayKgOfFodderHale2MinTwo);
         model.addAttribute("percentCurrentDayHale2MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinTwo));
         model.addAttribute("percentCurrentDayWaterHale2MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinTwo));
 
         // За текущия -2 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinTwo();
@@ -203,9 +204,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinTwo", currentDayKgOfFodderHale3MinTwo);
         model.addAttribute("percentCurrentDayHale3MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinTwo));
         model.addAttribute("percentCurrentDayWaterHale3MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinTwo));
 
         // За текущия -2 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinTwo();
@@ -218,9 +219,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinTwo", currentDayKgOfFodderHale4MinTwo);
         model.addAttribute("percentCurrentDayHale4MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinTwo));
         model.addAttribute("percentCurrentDayWaterHale4MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinTwo));
 
         // За текущия - 3 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinThree();
@@ -234,9 +235,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinThree", LocalDate.now().minusDays(3));
         model.addAttribute("currentDayKgOfFodderMinThree", currentDayKgOfFodderMinThree);
         model.addAttribute("percentCurrentDayMinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinThree));
         model.addAttribute("percentCurrentDayWaterMinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinThree));
 
         // За текущия -3 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinThree();
@@ -249,9 +250,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinThree", currentDayKgOfFodderHale2MinThree);
         model.addAttribute("percentCurrentDayHale2MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinThree));
         model.addAttribute("percentCurrentDayWaterHale2MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinThree));
 
         // За текущия -3 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinThree();
@@ -264,9 +265,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinThree", currentDayKgOfFodderHale3MinThree);
         model.addAttribute("percentCurrentDayHale3MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinThree));
         model.addAttribute("percentCurrentDayWaterHale3MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinThree));
 
         // За текущия -3 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinThree();
@@ -279,9 +280,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinThree", currentDayKgOfFodderHale4MinThree);
         model.addAttribute("percentCurrentDayHale4MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinThree));
         model.addAttribute("percentCurrentDayWaterHale4MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinThree));
 
         // За текущия - 4 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinFourth();
@@ -295,9 +296,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinFourth", LocalDate.now().minusDays(4));
         model.addAttribute("currentDayKgOfFodderMinFourth", currentDayKgOfFodderMinFourth);
         model.addAttribute("percentCurrentDayMinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinFourth));
         model.addAttribute("percentCurrentDayWaterMinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinFourth));
 
         // За текущия -4 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinFourth();
@@ -310,9 +311,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinFourth", currentDayKgOfFodderHale2MinFourth);
         model.addAttribute("percentCurrentDayHale2MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinFourth));
         model.addAttribute("percentCurrentDayWaterHale2MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinFourth));
 
         // За текущия -4 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinFourth();
@@ -325,9 +326,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinFourth", currentDayKgOfFodderHale3MinFourth);
         model.addAttribute("percentCurrentDayHale3MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinFourth));
         model.addAttribute("percentCurrentDayWaterHale3MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinFourth));
 
         // За текущия -4 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinFourth();
@@ -340,9 +341,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinFourth", currentDayKgOfFodderHale4MinFourth);
         model.addAttribute("percentCurrentDayHale4MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinFourth));
         model.addAttribute("percentCurrentDayWaterHale4MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinFourth));
 
         // За текущия - 5 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinFifth = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinFifth();
@@ -356,9 +357,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinFifth", LocalDate.now().minusDays(5));
         model.addAttribute("currentDayKgOfFodderMinFifth", currentDayKgOfFodderMinFifth);
         model.addAttribute("percentCurrentDayMinFifth"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinFifth));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinFifth));
         model.addAttribute("percentCurrentDayWaterMinFifth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinFifth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinFifth));
 
         // За текущия -5 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinFifth = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinFifth();
@@ -371,9 +372,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinFifth", currentDayKgOfFodderHale2MinFifth);
         model.addAttribute("percentCurrentDayHale2MinFifth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinFifth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinFifth));
         model.addAttribute("percentCurrentDayWaterHale2MinFifth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinFifth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinFifth));
 
         // За текущия -5 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinFifth = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinFifth();
@@ -386,9 +387,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinFifth", currentDayKgOfFodderHale3MinFifth);
         model.addAttribute("percentCurrentDayHale3MinFifth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinFifth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinFifth));
         model.addAttribute("percentCurrentDayWaterHale3MinFifth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinFifth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinFifth));
 
         // За текущия -5 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinFifth = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinFifth();
@@ -401,9 +402,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinFifth", currentDayKgOfFodderHale4MinFifth);
         model.addAttribute("percentCurrentDayHale4MinFifth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinFifth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinFifth));
         model.addAttribute("percentCurrentDayWaterHale4MinFifth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinFifth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinFifth));
 
         // За текущия - 6 ден Хале 1 Силоз 1
         Long eatenFodderCurrentDayMinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale1MinSix();
@@ -417,9 +418,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayMinSix", LocalDate.now().minusDays(6));
         model.addAttribute("currentDayKgOfFodderMinSix", currentDayKgOfFodderMinSix);
         model.addAttribute("percentCurrentDayMinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayMinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayMinSix));
         model.addAttribute("percentCurrentDayWaterMinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterMinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterMinSix));
 
         // За текущия -6 ден Хале 2 Силоз 2
         Long lastDayEatenFodderHale2MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale2MinSix();
@@ -432,9 +433,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale2MinSix", currentDayKgOfFodderHale2MinSix);
         model.addAttribute("percentCurrentDayHale2MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale2MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale2MinSix));
         model.addAttribute("percentCurrentDayWaterHale2MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale2MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale2MinSix));
 
         // За текущия -6 ден Хале 3 Силоз 3
         Long lastDayEatenFodderHale3MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale3MinSix();
@@ -447,9 +448,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale3MinSix", currentDayKgOfFodderHale3MinSix);
         model.addAttribute("percentCurrentDayHale3MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale3MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale3MinSix));
         model.addAttribute("percentCurrentDayWaterHale3MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale3MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale3MinSix));
 
         // За текущия -6 ден Хале 4 Силоз 4
         Long lastDayEatenFodderHale4MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale4MinSix();
@@ -462,9 +463,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale4MinSix", currentDayKgOfFodderHale4MinSix);
         model.addAttribute("percentCurrentDayHale4MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale4MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale4MinSix));
         model.addAttribute("percentCurrentDayWaterHale4MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale4MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale4MinSix));
 
         return "spravka-fodder";
     }
@@ -484,9 +485,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayHale5", LocalDate.now());
         model.addAttribute("currentDayKgOfFodderHale5", currentDayKgOfFodderHale5);
         model.addAttribute("percentCurrentDayHale5"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5));
         model.addAttribute("percentCurrentDayWaterHale5"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5));
 
         // За текущия ден Хале 6 Силоз 6
         Long lastDayEatenFodderHale6 = eatenFodderAndWaterService.findLastRecordsByCategoryHale6();
@@ -497,11 +498,13 @@ public class EatenFodderAndWaterController {
         float percentCurrentDayHale6 = (lastDayEatenFodderHale6 / (countHensOfCurrentDayHale6 * 1.0f));
         float percentCurrentDayWaterHale6 = (currentDayLitreOfWaterHale6 / (countHensOfCurrentDayHale6 * 1.0f));
 
+
+
         model.addAttribute("currentDayKgOfFodderHale6", currentDayKgOfFodderHale6);
         model.addAttribute("percentCurrentDayHale6"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6));
         model.addAttribute("percentCurrentDayWaterHale6"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6));
+                , String.format("%.4f" + " мл.",percentCurrentDayWaterHale6));
 
         // За текущия ден Хале 7 Силоз 7
         Long lastDayEatenFodderHale7 = eatenFodderAndWaterService.findLastRecordsByCategoryHale7();
@@ -514,9 +517,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7", currentDayKgOfFodderHale7);
         model.addAttribute("percentCurrentDayHale7"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7));
         model.addAttribute("percentCurrentDayWaterHale7"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7));
 
         // За текущия ден Хале 8 Силоз 8
         Long lastDayEatenFodderHale8 = eatenFodderAndWaterService.findLastRecordsByCategoryHale8();
@@ -529,9 +532,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8", currentDayKgOfFodderHale8);
         model.addAttribute("percentCurrentDayHale8"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8));
         model.addAttribute("percentCurrentDayWaterHale8"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8));
 
         // За текущия ден Хале 9 Силоз 9
         Long lastDayEatenFodderHale9 = eatenFodderAndWaterService.findLastRecordsByCategoryHale9();
@@ -544,9 +547,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9", currentDayKgOfFodderHale9);
         model.addAttribute("percentCurrentDayHale9"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9));
         model.addAttribute("percentCurrentDayWaterHale9"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9));
 
         // За текущия ден - 1 ден Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinOne();
@@ -560,9 +563,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayHale5MinOne", LocalDate.now().minusDays(1));
         model.addAttribute("currentDayKgOfFodderHale5MinOne", currentDayKgOfFodderHale5MinOne);
         model.addAttribute("percentCurrentDayHale5MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinOne));
         model.addAttribute("percentCurrentDayWaterHale5MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinOne));
 
         // За текущия ден - 1 ден Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinOne();
@@ -575,9 +578,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinOne", currentDayKgOfFodderHale6MinOne);
         model.addAttribute("percentCurrentDayHale6MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinOne));
         model.addAttribute("percentCurrentDayWaterHale6MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinOne));
 
         // За текущия ден  - 1 ден Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinOne();
@@ -590,9 +593,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinOne", currentDayKgOfFodderHale7MinOne);
         model.addAttribute("percentCurrentDayHale7MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinOne));
         model.addAttribute("percentCurrentDayWaterHale7MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinOne));
 
         // За текущия ден - 1 ден Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinOne();
@@ -605,9 +608,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinOne", currentDayKgOfFodderHale8MinOne);
         model.addAttribute("percentCurrentDayHale8MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinOne));
         model.addAttribute("percentCurrentDayWaterHale8MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinOne));
 
         // За текущия ден - 1 ден Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinOne = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinOne();
@@ -620,9 +623,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinOne", currentDayKgOfFodderHale9MinOne);
         model.addAttribute("percentCurrentDayHale9MinOne"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinOne));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinOne));
         model.addAttribute("percentCurrentDayWaterHale9MinOne"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinOne));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinOne));
 
         // За текущия ден -2 Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinTwo();
@@ -636,9 +639,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayHale5MinTwo", LocalDate.now().minusDays(2));
         model.addAttribute("currentDayKgOfFodderHale5MinTwo", currentDayKgOfFodderHale5MinTwo);
         model.addAttribute("percentCurrentDayHale5MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinTwo));
         model.addAttribute("percentCurrentDayWaterHale5MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinTwo));
 
         // За текущия ден -2 Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinTwo();
@@ -651,9 +654,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinTwo", currentDayKgOfFodderHale6MinTwo);
         model.addAttribute("percentCurrentDayHale6MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinTwo));
         model.addAttribute("percentCurrentDayWaterHale6MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinTwo));
 
         // За текущия ден -2 Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinTwo();
@@ -666,9 +669,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinTwo", currentDayKgOfFodderHale7MinTwo);
         model.addAttribute("percentCurrentDayHale7MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinTwo));
         model.addAttribute("percentCurrentDayWaterHale7MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinTwo));
 
         // За текущия ден  -2 Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinTwo();
@@ -681,9 +684,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinTwo", currentDayKgOfFodderHale8MinTwo);
         model.addAttribute("percentCurrentDayHale8MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinTwo));
         model.addAttribute("percentCurrentDayWaterHale8MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinTwo));
 
         // За текущия ден - 2 Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinTwo = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinTwo();
@@ -696,9 +699,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinTwo", currentDayKgOfFodderHale9MinTwo);
         model.addAttribute("percentCurrentDayHale9MinTwo"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinTwo));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinTwo));
         model.addAttribute("percentCurrentDayWaterHale9MinTwo"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinTwo));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinTwo));
 
         // За текущия ден -3 Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinThree();
@@ -712,9 +715,9 @@ public class EatenFodderAndWaterController {
         model.addAttribute("currentDayHale5MinThree", LocalDate.now().minusDays(3));
         model.addAttribute("currentDayKgOfFodderHale5MinThree", currentDayKgOfFodderHale5MinThree);
         model.addAttribute("percentCurrentDayHale5MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinThree));
         model.addAttribute("percentCurrentDayWaterHale5MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinThree));
 
         // За текущия ден -3 Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinThree();
@@ -727,9 +730,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinThree", currentDayKgOfFodderHale6MinThree);
         model.addAttribute("percentCurrentDayHale6MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinThree));
         model.addAttribute("percentCurrentDayWaterHale6MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinThree));
 
         // За текущия ден -3 Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinThree();
@@ -742,9 +745,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinThree", currentDayKgOfFodderHale7MinThree);
         model.addAttribute("percentCurrentDayHale7MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinThree));
         model.addAttribute("percentCurrentDayWaterHale7MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinThree));
 
         // За текущия ден -3 Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinThree();
@@ -757,9 +760,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinThree", currentDayKgOfFodderHale8MinThree);
         model.addAttribute("percentCurrentDayHale8MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinThree));
         model.addAttribute("percentCurrentDayWaterHale8MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinThree));
 
         // За текущия ден -3 Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinThree = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinThree();
@@ -772,9 +775,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinThree", currentDayKgOfFodderHale9MinThree);
         model.addAttribute("percentCurrentDayHale9MinThree"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinThree));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinThree));
         model.addAttribute("percentCurrentDayWaterHale9MinThree"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinThree));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinThree));
 
         // За текущия ден -4 Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinFourth();
@@ -785,12 +788,12 @@ public class EatenFodderAndWaterController {
         float percentCurrentDayHale5MinFourth = (lastDayEatenFodderHale5MinFourth / (countHensOfCurrentDayHale5MinFourth * 1.0f));
         float percentCurrentDayWaterHale5MinFourth = (currentDayLitreOfWaterHale5MinFourth / (countHensOfCurrentDayHale5MinFourth * 1.0f));
 
-        model.addAttribute("currentDayHale5", LocalDate.now().minusDays(4));
+        model.addAttribute("currentDayHale5MinFourth", LocalDate.now().minusDays(4));
         model.addAttribute("currentDayKgOfFodderHale5MinFourth", currentDayKgOfFodderHale5MinFourth);
         model.addAttribute("percentCurrentDayHale5MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinFourth));
         model.addAttribute("percentCurrentDayWaterHale5MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinFourth));
 
         // За текущия ден -4 Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinFourth();
@@ -803,9 +806,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinFourth", currentDayKgOfFodderHale6MinFourth);
         model.addAttribute("percentCurrentDayHale6MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinFourth));
         model.addAttribute("percentCurrentDayWaterHale6MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinFourth));
 
         // За текущия ден -4 Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinFourth();
@@ -818,9 +821,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinFourth", currentDayKgOfFodderHale7MinFourth);
         model.addAttribute("percentCurrentDayHale7MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinFourth));
         model.addAttribute("percentCurrentDayWaterHale7MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinFourth));
 
         // За текущия ден -4 Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinFourth();
@@ -833,9 +836,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinFourth", currentDayKgOfFodderHale8MinFourth);
         model.addAttribute("percentCurrentDayHale8MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinFourth));
         model.addAttribute("percentCurrentDayWaterHale8MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinFourth));
 
         // За текущия ден -4 Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinFourth = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinFourth();
@@ -848,9 +851,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinFourth", currentDayKgOfFodderHale9MinFourth);
         model.addAttribute("percentCurrentDayHale9MinFourth"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinFourth));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinFourth));
         model.addAttribute("percentCurrentDayWaterHale9MinFourth"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinFourth));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinFourth));
 
         // За текущия ден -5 Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinFive = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinFive();
@@ -861,12 +864,12 @@ public class EatenFodderAndWaterController {
         float percentCurrentDayHale5MinFive = (lastDayEatenFodderHale5MinFive / (countHensOfCurrentDayHale5MinFive * 1.0f));
         float percentCurrentDayWaterHale5MinFive = (currentDayLitreOfWaterHale5MinFive / (countHensOfCurrentDayHale5MinFive * 1.0f));
 
-        model.addAttribute("currentDayHale5", LocalDate.now().minusDays(5));
+        model.addAttribute("currentDayHale5MinFive", LocalDate.now().minusDays(5));
         model.addAttribute("currentDayKgOfFodderHale5MinFive", currentDayKgOfFodderHale5MinFive);
         model.addAttribute("percentCurrentDayHale5MinFive"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinFive));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinFive));
         model.addAttribute("percentCurrentDayWaterHale5MinFive"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinFive));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinFive));
 
         // За текущия ден -5 Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinFive = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinFive();
@@ -879,9 +882,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinFive", currentDayKgOfFodderHale6MinFive);
         model.addAttribute("percentCurrentDayHale6MinFive"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinFive));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinFive));
         model.addAttribute("percentCurrentDayWaterHale6MinFive"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinFive));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinFive));
 
         // За текущия ден -5 Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinFive = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinFive();
@@ -894,9 +897,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinFive", currentDayKgOfFodderHale7MinFive);
         model.addAttribute("percentCurrentDayHale7MinFive"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinFive));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinFive));
         model.addAttribute("percentCurrentDayWaterHale7MinFive"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinFive));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinFive));
 
         // За текущия ден -5 Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinFive = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinFive();
@@ -909,9 +912,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinFive", currentDayKgOfFodderHale8MinFive);
         model.addAttribute("percentCurrentDayHale8MinFive"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinFive));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinFive));
         model.addAttribute("percentCurrentDayWaterHale8MinFive"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinFive));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinFive));
 
         // За текущия ден -5 Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinFive = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinFive();
@@ -924,9 +927,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinFive", currentDayKgOfFodderHale9MinFive);
         model.addAttribute("percentCurrentDayHale9MinFive"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinFive));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinFive));
         model.addAttribute("percentCurrentDayWaterHale9MinFive"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinFive));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinFive));
 
         // За текущия ден -6  Хале 5 Силоз 5
         Long lastDayEatenFodderHale5MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale5MinSix();
@@ -937,12 +940,12 @@ public class EatenFodderAndWaterController {
         float percentCurrentDayHale5MinSix = (lastDayEatenFodderHale5MinSix / (countHensOfCurrentDayHale5MinSix * 1.0f));
         float percentCurrentDayWaterHale5MinSix = (currentDayLitreOfWaterHale5MinSix / (countHensOfCurrentDayHale5MinSix * 1.0f));
 
-        model.addAttribute("currentDayHale5", LocalDate.now().minusDays(6));
+        model.addAttribute("currentDayHale5MinSix", LocalDate.now().minusDays(6));
         model.addAttribute("currentDayKgOfFodderHale5MinSix", currentDayKgOfFodderHale5MinSix);
         model.addAttribute("percentCurrentDayHale5MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale5MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale5MinSix));
         model.addAttribute("percentCurrentDayWaterHale5MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale5MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale5MinSix));
 
         // За текущия ден -6 Хале 6 Силоз 6
         Long lastDayEatenFodderHale6MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale6MinSix();
@@ -955,9 +958,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale6MinSix", currentDayKgOfFodderHale6MinSix);
         model.addAttribute("percentCurrentDayHale6MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale6MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale6MinSix));
         model.addAttribute("percentCurrentDayWaterHale6MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale6MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale6MinSix));
 
         // За текущия ден -6 Хале 7 Силоз 7
         Long lastDayEatenFodderHale7MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale7MinSix();
@@ -970,9 +973,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale7MinSix", currentDayKgOfFodderHale7MinSix);
         model.addAttribute("percentCurrentDayHale7MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale7MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale7MinSix));
         model.addAttribute("percentCurrentDayWaterHale7MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale7MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale7MinSix));
 
         // За текущия ден -6 Хале 8 Силоз 8
         Long lastDayEatenFodderHale8MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale8MinSix();
@@ -985,9 +988,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale8MinSix", currentDayKgOfFodderHale8MinSix);
         model.addAttribute("percentCurrentDayHale8MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale8MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale8MinSix));
         model.addAttribute("percentCurrentDayWaterHale8MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale8MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale8MinSix));
 
         // За текущия ден -6 Хале 9 Силоз 9
         Long lastDayEatenFodderHale9MinSix = eatenFodderAndWaterService.findLastRecordsByCategoryHale9MinSix();
@@ -1000,9 +1003,9 @@ public class EatenFodderAndWaterController {
 
         model.addAttribute("currentDayKgOfFodderHale9MinSix", currentDayKgOfFodderHale9MinSix);
         model.addAttribute("percentCurrentDayHale9MinSix"
-                , String.format("%.2f" + " гр.",percentCurrentDayHale9MinSix));
+                , String.format("%.4f" + " гр.",percentCurrentDayHale9MinSix));
         model.addAttribute("percentCurrentDayWaterHale9MinSix"
-                , String.format("%.2f" + " мл.", percentCurrentDayWaterHale9MinSix));
+                , String.format("%.4f" + " мл.", percentCurrentDayWaterHale9MinSix));
 
         return "spravka-fodder-upper";
     }

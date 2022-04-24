@@ -1,28 +1,15 @@
 package com.example.projectsoftuni.web;
 
 import com.example.projectsoftuni.model.binding.HensAddBindingModel;
-import com.example.projectsoftuni.model.binding.UserRegistrationBindingModel;
-import com.example.projectsoftuni.model.entity.UserRoleEntity;
-import com.example.projectsoftuni.model.entity.enums.UserRoleEnum;
 import com.example.projectsoftuni.model.view.UserViewModel;
 import com.example.projectsoftuni.repository.HensAddRepository;
-import com.example.projectsoftuni.service.CartonAddService;
-import com.example.projectsoftuni.service.EggAddService;
-import com.example.projectsoftuni.service.HensAddService;
-import com.example.projectsoftuni.service.UserService;
+import com.example.projectsoftuni.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Controller
 public class HomeController {
@@ -35,10 +22,11 @@ public class HomeController {
     private final CartonAddService cartonAddService;
     private final UserService userService;
     private final UserViewModel userViewModel;
+    private final ResidueOfExtractionService residueOfExtractionService;
 
     public HomeController(EggAddService eggAddService, HensAddService hensAddService
             , ModelMapper modelMapper, HensAddBindingModel hensAddBindingModel
-            , HensAddRepository hensAddRepository, CartonAddService cartonAddService, UserService userService, UserViewModel userViewModel) {
+            , HensAddRepository hensAddRepository, CartonAddService cartonAddService, UserService userService, UserViewModel userViewModel, ResidueOfExtractionService residueOfExtractionService) {
 
         this.eggAddService = eggAddService;
         this.hensAddService = hensAddService;
@@ -48,6 +36,7 @@ public class HomeController {
         this.cartonAddService = cartonAddService;
         this.userService = userService;
         this.userViewModel = userViewModel;
+        this.residueOfExtractionService = residueOfExtractionService;
     }
 
     @GetMapping("/")
@@ -70,70 +59,142 @@ public class HomeController {
     public String AllCountTable(Model model){
 
         //Base Lower
-        Long eggXLCoreyLower = eggAddService.findByCategoryXLLower();
-        Long eggXLCartonLower = eggAddService.findByCategoryXLCartonsLower();
-        Long eggLCoreyLower = eggAddService.findByCategoryLCoreyLower();
-        Long eggLCartonLower = eggAddService.findByCategoryLCartonLower();
-        Long eggMCoreyLower = eggAddService.findByCategoryMCoreyLower();
-        Long eggMCartonLower = eggAddService.findByCategoryMCartonLower();
-        Long eggSCoreyLower = eggAddService.findByCategorySCoreyLower();
-        Long eggSCartonLower = eggAddService.findByCategorySCartonLower();
-        Long eggBrokenLower = eggAddService.findByCategoryBrokenLower();
-
-
+        //XL
         model.addAttribute("eggXLCoreyLower", eggAddService.findByCategoryXLLower() / 20);
         model.addAttribute("eggXLCartonLower", eggAddService.findByCategoryXLCartonsLower() / 120);
-        model.addAttribute("eggLCoreyLower", eggAddService.findByCategoryLCoreyLower() / 30);
+        //L
+        model.addAttribute("eggFamilyCoreyLowerL", eggAddService.findCoreyFamilyBaseLowerL() / 30);
+        model.addAttribute("eggChezCoreyLowerL", eggAddService.findCoreyChezBaseLowerL() / 30);
+        model.addAttribute("eggEuroCoreyLowerL", eggAddService.findCoreyEuroBaseLowerL() / 30);
+        model.addAttribute("eggHartmanCoreyLowerL", eggAddService.findCoreyHartmanBaseLowerL() / 30);
         model.addAttribute("eggLCartonLower", eggAddService.findByCategoryLCartonLower() / 180);
-        model.addAttribute("eggMCoreyLower", eggAddService.findByCategoryMCoreyLower() / 30);
+        model.addAttribute("eggLCartonLowerBrown", eggAddService.findCartons180BaseLowerBrownL() / 180);
+        model.addAttribute("eggLCartonLowerBrown360", eggAddService.findCartons360BaseLowerBrownL() / 360);
+        model.addAttribute("eggLCoreyUkraynaLowerL", eggAddService.findCoreyUkraynaLowerL() / 30);
+        model.addAttribute("eggLCoreyElpaLowerL", eggAddService.findCoreyElpaLowerL() / 30);
+        model.addAttribute("eggLCoreyEkoFarmLowerL", eggAddService.findCoreyEkoFarmLowerL() / 30);
+        model.addAttribute("eggLCoreyNew1LowerL", eggAddService.findCoreyNew1LowerL() / 30);
+        model.addAttribute("eggLCoreyNew2LowerL", eggAddService.findCoreyNew2LowerL() / 30);
+
+        //M
         model.addAttribute("eggMCartonLower", eggAddService.findByCategoryMCartonLower() / 180);
-        model.addAttribute("eggSCoreyLower", eggAddService.findByCategorySCoreyLower() / 30);
+        model.addAttribute("eggFamilyCoreyLowerM", eggAddService.findCoreyFamilyBaseLowerM() / 30);
+        model.addAttribute("eggChezCoreyLowerM", eggAddService.findCoreyChezBaseLowerM() / 30);
+        model.addAttribute("eggEuroCoreyLowerM", eggAddService.findCoreyEuroBaseLowerM() / 30);
+        model.addAttribute("eggHartmanCoreyLowerM", eggAddService.findCoreyHartmanBaseLowerM() / 30);
+        model.addAttribute("eggLCartonMowerBrown", eggAddService.findByCarton180BaseLowerBrownM() / 180);
+        model.addAttribute("eggLCartonMowerBrown360", eggAddService.findByCarton360BaseLowerBrownM() / 360);
+        model.addAttribute("eggCoreyUkraynaLowerM", eggAddService.findCoreyUkraynaLowerM() / 30);
+        model.addAttribute("eggCoreyElpaLowerM", eggAddService.findCoreyElpaLowerM() / 30);
+        model.addAttribute("eggCoreyEkoFarmLowerM", eggAddService.findCoreyEkoFarmLowerM() / 30);
+        model.addAttribute("eggCoreyNew1LowerM", eggAddService.findCoreyNew1LowerM() / 30);
+        model.addAttribute("eggCoreyNew2LowerM", eggAddService.findCoreyNew2LowerM() / 30);
+
+        //S
         model.addAttribute("eggSCartonLower", eggAddService.findByCategorySCartonLower() / 180);
-        model.addAttribute("eggBrokenLower", eggAddService.findByCategoryBrokenLower() / 30);
+        model.addAttribute("eggFamilyCoreyLowerS", eggAddService.findCoreyFamilyBaseLowerS() / 30);
+        model.addAttribute("eggChezCoreyLowerS", eggAddService.findCoreyChezBaseLowerS() / 30);
+        model.addAttribute("eggEuroCoreyLowerS", eggAddService.findCoreyEuroBaseLowerS() / 30);
+        model.addAttribute("eggHartmanCoreyLowerS", eggAddService.findCoreyHartmanBaseLowerS() / 30);
+        model.addAttribute("eggSCartonMowerBrown", eggAddService.findCarton180BaseLowerBrownS() / 180);
+        model.addAttribute("eggSCartonMowerBrown360", eggAddService.findCarton360BaseLowerBrownS()/ 360);
+        model.addAttribute("eggCoreyUkraynaLowerS", eggAddService.findCoreyUkraynaLowerS() / 30);
+        model.addAttribute("eggCoreyElpaLowerS", eggAddService.findCoreyElpaLowerS() / 30);
+        model.addAttribute("eggCoreyEkoFarmLowerS", eggAddService.findCoreyEkoFarmLowerS() / 30);
+        model.addAttribute("eggCoreyNew1LowerS", eggAddService.findCoreyNew1LowerS() / 30);
+        model.addAttribute("eggCoreyNew2LowerS", eggAddService.findCoreyNew2LowerS() / 30);
+
+        //Broken
+        model.addAttribute("eggBrokenCartonLower", eggAddService.findByCartonLowerBroken() / 180);
+        model.addAttribute("eggFamilyCoreyLowerBr", eggAddService.findCoreyFamilyLowerBroken() / 30);
+        model.addAttribute("eggChezCoreyLowerBr", eggAddService.findCoreyChezLowerBroken() / 30);
+        model.addAttribute("eggEuroCoreyLowerBr", eggAddService.findCoreyEuroLowerBroken() / 30);
+        model.addAttribute("eggHartmanCoreyLowerBr", eggAddService.findCoreyHartmanLowerBroken() / 30);
+        model.addAttribute("eggBrCartonMowerBrown", eggAddService.findCarton180BaseLowerBrownBroken() / 180);
+        model.addAttribute("eggBrCartonMowerBrown360", eggAddService.findCarton360BaseLowerBrownBroken()/ 360);
+        model.addAttribute("eggCoreyUkraynaLowerBROKEN", eggAddService.findCoreyUkraynaLowerBROKEN() / 30);
+        model.addAttribute("eggCoreyElpaLowerBROKEN", eggAddService.findCoreyElpaLowerBROKEN() / 30);
+        model.addAttribute("eggCoreyEkoFarmLowerBROKEN", eggAddService.findCoreyEkoFarmLowerBROKEN() / 30);
+        model.addAttribute("eggCoreyNew1LowerBROKEN", eggAddService.findCoreyNew1LowerBROKEN() / 30);
+        model.addAttribute("eggCoreyNew2LowerBROKEN", eggAddService.findCoreyNew2LowerBROKEN() / 30);
 
 
         //Base Upper
-        Long eggXLCoreyUpper = eggAddService.findByCategoryXLUpper();
-        Long eggXLCartonUpper = eggAddService.findByCategoryXLCartonsUpper();
-        Long eggLCoreyUpper = eggAddService.findByCategoryLCoreyUpper();
-        Long eggLCartonUpper = eggAddService.findByCategoryLCartonsUpper();
-        Long eggMCoreyUpper = eggAddService.findByCategoryMCoreyUpper();
-        Long eggMCartonUpper = eggAddService.findByCategoryMCartonsUpper();
-        Long eggSCoreyUpper = eggAddService.findByCategorySCoreyUpper();
-        Long eggSCartonUpper = eggAddService.findByCategorySCartonUpper();
-        Long eggBrokenUpper = eggAddService.findByCategoryBrokenUpper();
-
+        //XL
         model.addAttribute("eggXLCoreyUpper", eggAddService.findByCategoryXLUpper() / 20);
         model.addAttribute("eggXLCartonUpper", eggAddService.findByCategoryXLCartonsUpper() / 120);
-        model.addAttribute("eggLCoreyUpper", eggAddService.findByCategoryLCoreyUpper() / 30);
+        //L
+        model.addAttribute("eggFamilyCoreyUpperL", eggAddService.findCoreyFamilyUpperL() / 30);
+        model.addAttribute("eggChezCoreyUpperL", eggAddService.findCoreyChezUpperL() / 30);
+        model.addAttribute("eggEuroCoreyUpperL", eggAddService.findCoreyEuroUpperL() / 30);
+        model.addAttribute("eggHartmanCoreyUpperL", eggAddService.findCoreyHartmanUpperL() / 30);
         model.addAttribute("eggLCartonUpper", eggAddService.findByCategoryLCartonsUpper() / 180);
-        model.addAttribute("eggMCoreyUpper", eggAddService.findByCategoryMCoreyUpper() / 30);
+        model.addAttribute("eggLCartonUpperBrown", eggAddService.findCarton180UpperBrownL() / 180);
+        model.addAttribute("eggLCartonUpperBrown360", eggAddService.findCarton360UpperBrownL() / 360);
+        model.addAttribute("eggCoreyUkraynaUpperL", eggAddService.findCoreyUkraynaUpperL() / 30);
+        model.addAttribute("eggCoreyElpaUpperL", eggAddService.findCoreyElpaUpperL() / 30);
+        model.addAttribute("eggCoreyEkoFarmUpperL", eggAddService.findCoreyEkoFarmUpperL() / 30);
+        model.addAttribute("eggCoreyNew1UpperL", eggAddService.findCoreyNew1UpperL() / 30);
+        model.addAttribute("eggCoreyNew2UpperL", eggAddService.findCoreyNew2UpperL() / 30);
+
+
+        //M
+        model.addAttribute("eggFamilyCoreyUpperM", eggAddService.findCoreyFamilyUpperM() / 30);
+        model.addAttribute("eggChezCoreyUpperM", eggAddService.findCoreyChezUpperM() / 30);
+        model.addAttribute("eggEuroCoreyUpperM", eggAddService.findCoreyEuroUpperM() / 30);
+        model.addAttribute("eggHartmanCoreyUpperM", eggAddService.findCoreyHartmanUpperM() / 30);
         model.addAttribute("eggMCartonUpper", eggAddService.findByCategoryMCartonsUpper() / 180);
-        model.addAttribute("eggSCoreyUpper", eggAddService.findByCategorySCoreyUpper() / 30);
+        model.addAttribute("eggMCartonUpperBrown", eggAddService.findCarton180UpperBrownM() / 180);
+        model.addAttribute("eggMCartonUpperBrown360", eggAddService.findCarton360UpperBrownM() / 360);
+        model.addAttribute("eggCoreyUkraynaUpperM", eggAddService.findCoreyUkraynaUpperM() / 30);
+        model.addAttribute("eggCoreyElpaUpperM", eggAddService.findCoreyElpaUpperM() / 30);
+        model.addAttribute("eggCoreyEkoFarmUpperM", eggAddService.findCoreyEkoFarmUpperM() / 30);
+        model.addAttribute("eggCoreyNew1UpperM", eggAddService.findCoreyNew1UpperM() / 30);
+        model.addAttribute("eggCoreyNew2UpperM", eggAddService.findCoreyNew2UpperM() / 30);
+
+        //S
+        model.addAttribute("eggFamilyCoreyUpperS", eggAddService.findCoreyFamilyUpperS() / 30);
+        model.addAttribute("eggChezCoreyUpperS", eggAddService.findCoreyChezUpperS() / 30);
+        model.addAttribute("eggEuroCoreyUpperS", eggAddService.findCoreyEuroUpperS() / 30);
+        model.addAttribute("eggHartmanCoreyUpperS", eggAddService.findCoreyHartmanUpperS() / 30);
         model.addAttribute("eggSCartonUpper", eggAddService.findByCategorySCartonUpper() / 180);
-        model.addAttribute("eggBrokenUpper", eggAddService.findByCategoryBrokenUpper() / 30);
+        model.addAttribute("eggSCartonUpperBrown", eggAddService.findCarton180UpperBrownS() / 180);
+        model.addAttribute("eggSCartonUpperBrown360", eggAddService.findCarton360UpperBrownS() / 360);
+        model.addAttribute("eggCoreyUkraynaUpperS", eggAddService.findCoreyUkraynaUpperS() / 30);
+        model.addAttribute("eggCoreyElpaUpperS", eggAddService.findCoreyElpaUpperS() / 30);
+        model.addAttribute("eggCoreyEkoFarmUpperS", eggAddService.findCoreyEkoFarmUpperS() / 30);
+        model.addAttribute("eggCoreyNew1UpperS", eggAddService.findCoreyNew1UpperS() / 30);
+        model.addAttribute("eggCoreyNew2UpperS", eggAddService.findCoreyNew2UpperS() / 30);
+
+        //Broken
+        model.addAttribute("eggBrokenCartonUpper", eggAddService.findCartonUpperBroken() / 180);
+        model.addAttribute("eggFamilyCoreyUpperBr", eggAddService.findCoreyFamilyUpperBroken() / 30);
+        model.addAttribute("eggChezCoreyUpperBr", eggAddService.findCoreyChezUpperBroken() / 30);
+        model.addAttribute("eggEuroCoreyUpperBr", eggAddService.findCoreyEuroUpperBroken() / 30);
+        model.addAttribute("eggHartmanCoreyUpperBr", eggAddService.findCoreyHartmanUpperBroken() / 30);
+        model.addAttribute("eggBrCartonUpperBrown", eggAddService.findCarton180BaseUpperBrownBroken() / 180);
+        model.addAttribute("eggBrCartonUpperBrown360", eggAddService.findCarton360BaseUpperBrownBroken()/ 360);
+        model.addAttribute("eggCoreyUkraynaUpperBROKEN", eggAddService.findCoreyUkraynaUpperBROKEN() / 30);
+        model.addAttribute("eggCoreyElpaUpperBROKEN", eggAddService.findCoreyElpaUpperBROKEN() / 30);
+        model.addAttribute("eggCoreyEkoFarmUpperBROKEN", eggAddService.findCoreyEkoFarmUpperBROKEN() / 30);
+        model.addAttribute("eggCoreyNew1UpperBROKEN", eggAddService.findCoreyNew1UpperBROKEN() / 30);
+        model.addAttribute("eggCoreyNew2UpperBROKEN", eggAddService.findCoreyNew2UpperBROKEN() / 30);
 
 
         // За брой яйца По категории на яйцата за база 1 + 2
-        Long eggXL = eggAddService.findByCategoryXL();
-        Long eggL = eggAddService.findByCategoryL();
-        Long eggM = eggAddService.findByCategoryM();
-        Long eggS = eggAddService.findByCategoryS();
-        Long eggBROKEN = eggAddService.findByCategoryBROKEN();
 
-
-        model.addAttribute("countXL", eggAddService.findByCategoryXL());
-        model.addAttribute("countL", eggAddService.findByCategoryL());
-        model.addAttribute("countM", eggAddService.findByCategoryM());
-        model.addAttribute("countS", eggAddService.findByCategoryS());
-        model.addAttribute("countBROKEN", eggAddService.findByCategoryBROKEN());
-
-
-        model.addAttribute("countXLCarton", eggAddService.findByCategoryXL() / 120);
-        model.addAttribute("countLCarton", eggAddService.findByCategoryL() / 180);
-        model.addAttribute("countMCarton", eggAddService.findByCategoryM() / 180);
-        model.addAttribute("countSCarton", eggAddService.findByCategoryS() / 180);
-        model.addAttribute("countBROKENCarton", eggAddService.findByCategoryBROKEN() / 180);
+     //   model.addAttribute("countXL", eggAddService.findByCategoryXL());
+     //   model.addAttribute("countL", eggAddService.findByCategoryL());
+     //   model.addAttribute("countM", eggAddService.findByCategoryM());
+     //   model.addAttribute("countS", eggAddService.findByCategoryS());
+     //   model.addAttribute("countBROKEN", eggAddService.findByCategoryBROKEN());
+//
+//
+     //   model.addAttribute("countXLCarton", eggAddService.findByCategoryXL() / 120);
+     //   model.addAttribute("countLCarton", eggAddService.findByCategoryL() / 180);
+     //   model.addAttribute("countMCarton", eggAddService.findByCategoryM() / 180);
+     //   model.addAttribute("countSCarton", eggAddService.findByCategoryS() / 180);
+     //   model.addAttribute("countBROKENCarton", eggAddService.findByCategoryBROKEN() / 180);
 
 
         return "allCountTableByCategory";
@@ -141,34 +202,6 @@ public class HomeController {
 
     @GetMapping("/count-hens-now")
     public String countHensNow(Model model){
-
-        Long haleFirst = hensAddService.getCountOfHensFirst();
-        Long lastHaleFirst = hensAddService.getCountOfHnesFirstLast();
-
-        Long haleSecond = hensAddService.getCountOfHensSecond();
-        Long lastHaleSecond = hensAddService.getCountOfHensSecondLast();
-
-        Long haleThird = hensAddService.getCountOfHensThird();
-        Long lastHaleThird = hensAddService.getCountOfHensThirdLast();
-
-        Long haleFourth = hensAddService.getCountOfHensFourth();
-        Long lastHaleFourth = hensAddService.getCountOfHensFourthLast();
-
-        Long haleFifth = hensAddService.getCountOfHensFifth();
-        Long lastHaleFifth = hensAddService.getCountOfHensFifthLast();
-
-        Long haleSixth = hensAddService.getCountOfHensSixth();
-        Long lastHaleSixth = hensAddService.getCountOfHensSixthLast();
-
-        Long haleSeventh = hensAddService.getCountOfHensSeventh();
-        Long lastHaleSeventh = hensAddService.getCountOfHensSeventhLast();
-
-        Long haleEighth = hensAddService.getCountOfHensEighth();
-        Long lastHaleEighth = hensAddService.getCountOfHensEighthLast();
-
-        Long haleNinth = hensAddService.getCountOfHensNinth();
-        Long lastHaleNinth = hensAddService.getCountOfHensNinthLast();
-
 
         model.addAttribute("countFIRST", hensAddService.getCountOfHnesFirstLast());
         model.addAttribute("countSECOND", hensAddService.getCountOfHensSecondLast());
@@ -180,41 +213,52 @@ public class HomeController {
         model.addAttribute("countEIGHT", hensAddService.getCountOfHensEighthLast());
         model.addAttribute("countNINTH", hensAddService.getCountOfHensNinthLast());
 
-
-
         return "count-hens-now";
     }
 
     @GetMapping("/count-cartons-now")
     public String allCartonsCount(Model model){
 
-        Long corey20Upper = cartonAddService.getCountOfCore120FromBaseUpper();
-        Long carton120Upper = cartonAddService.getCountOfCarton120FromBaseUpper();
-        Long carton180Upper = cartonAddService.getCountOfCarton180FromBaseUpper();
-        Long corey30Upper = cartonAddService.getCountOfCore180FromBaseUpper();
-
-
+        //Upper Base
         model.addAttribute("countCorey120Upper",cartonAddService.getCountOfCore120FromBaseUpper());
         model.addAttribute("countCarton120Upper", cartonAddService.getCountOfCarton120FromBaseUpper());
         model.addAttribute("countCarton180Upper", cartonAddService.getCountOfCarton180FromBaseUpper());
-        model.addAttribute("countCorey180Upper", cartonAddService.getCountOfCore180FromBaseUpper());
+        model.addAttribute("countCoreyFamilyUpper", cartonAddService.getCountCoreyFamilyUpper());
+        model.addAttribute("countCoreyChezUpper", cartonAddService.getCountCoreyChezUpper());
+        model.addAttribute("countCoreyHartmanUpper", cartonAddService.getCountCoreyHartmanUpper());
+        model.addAttribute("countCoreyEuroUpper", cartonAddService.getCountCoreyEuroUpper());
+        model.addAttribute("countCarton180BrownUpper", cartonAddService.getCountOfCarton180FromBaseUpperBrown());
+        model.addAttribute("countCarton360BrownUpper", cartonAddService.getCountOfCarton360FromBaseUpperBrown());
+        model.addAttribute("countPaperDunapackUpper", cartonAddService.getCountPaperDunapackUpper());
+        model.addAttribute("countPaperDSmitkUpper", cartonAddService.getCountPaperDSmitkUpper());
+        model.addAttribute("countCornerDunapackUpper", cartonAddService.getCountCornerDunapackUpper());
+        model.addAttribute("countCornerDSmitkUpper", cartonAddService.getCountCornerDSmitkUpper());
+        model.addAttribute("countCoreyUkraynaUpper", cartonAddService.getCountCoreyUkraynaUpper());
+        model.addAttribute("countCoreyElpaUpper", cartonAddService.getCountCoreyElpaUpper());
+        model.addAttribute("countCoreyEkoFarmUpper", cartonAddService.getCountCoreyEkoFarmUpper());
+        model.addAttribute("countCoreyNew1Upper", cartonAddService.getCountCoreyNew1Upper());
+        model.addAttribute("countCoreyNew2Upper", cartonAddService.getCountCoreyNew2Upper());
 
 
-        Long corey20Lower = cartonAddService.getCountOfCore120FromBaseLower();
-        Long carton120Lower = cartonAddService.getCountOfCarton120FromBaseLower();
-        Long carton180Lower = cartonAddService.getCountOfCarton180FromBaseLower();
-        Long corey30Lower = cartonAddService.getCountOfCore180FromBaseLower();
-
+        //Lower Base
         model.addAttribute("countCorey20Lower",cartonAddService.getCountOfCore120FromBaseLower());
         model.addAttribute("countCarton120Lower", cartonAddService.getCountOfCarton120FromBaseLower());
         model.addAttribute("countCarton180Lower", cartonAddService.getCountOfCarton180FromBaseLower());
-        model.addAttribute("countCorey30Lower", cartonAddService.getCountOfCore180FromBaseLower());
-
-
-
-        // for decrement cartons count when adding eggs
-
-        Long corey20LowerLast = cartonAddService.getCountOfCore120FromBaseLowerLast();
+        model.addAttribute("countCoreyFamilyLower", cartonAddService.getCountCoreyFamilyLower());
+        model.addAttribute("countCoreyChezLower", cartonAddService.getCountCoreyChezLower());
+        model.addAttribute("countCoreyHartmanLower", cartonAddService.getCountCoreyHartmanLower());
+        model.addAttribute("countCoreyEuroLower", cartonAddService.getCountCoreyEuroLower());
+        model.addAttribute("countCarton180BrownLower", cartonAddService.getCountOfCarton180FromBaseLowerBrown());
+        model.addAttribute("countCarton360BrownLower", cartonAddService.getCountOfCarton360FromBaseLowerBrown());
+        model.addAttribute("countPaperDunapackLower", cartonAddService.getCountPaperDunapackLower());
+        model.addAttribute("countPaperDSmitkLower", cartonAddService.getCountPaperDSmitkLower());
+        model.addAttribute("countCornerDunapackLower", cartonAddService.getCountCornerDunapackLower());
+        model.addAttribute("countCornerDSmitkLower", cartonAddService.getCountCornerDSmitkLower());
+        model.addAttribute("countCoreyUkraynaLower", cartonAddService.getCountCoreyUkraynaLower());
+        model.addAttribute("countCoreyElpaLower", cartonAddService.getCountCoreyElpaLower());
+        model.addAttribute("countCoreyEkoFarmLower", cartonAddService.getCountCoreyEkoFarmLower());
+        model.addAttribute("countCoreyNew1Lower", cartonAddService.getCountCoreyNew1Lower());
+        model.addAttribute("countCoreyNew2Lower", cartonAddService.getCountCoreyNew2Lower());
 
 
         return "count-cartons-now";
@@ -273,7 +317,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensFirstAboutCurrentDayMinusThree();
 
         float percentHaleFirstCurrentDayMinusThree
-                = (countEggOfFirstHaleByDescDateCurrentDayMinusThreeDay / (countHensOfFirstHaleByDescDateCurrentDayMinusThree
+                = (countEggOfFirstHaleByDescDateCurrentDayMinusThreeDay/ (countHensOfFirstHaleByDescDateCurrentDayMinusThree
                 * 1.0f)) * 100;
 
         model.addAttribute("currentDayMinusThree", LocalDate.now().minusDays(3));
@@ -398,7 +442,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensSecondAboutCurrentDayMinusFourth();
 
         float percentHaleSecondCurrentDayMinusFourth
-                = (countEggOfSecondHaleByDescDateCurrentDayMinusFourthDay / (countHensOfSecondHaleByDescDateCurrentDayMinusFourth * 1.0f)) * 100;
+                = (countEggOfSecondHaleByDescDateCurrentDayMinusFourthDay/ (countHensOfSecondHaleByDescDateCurrentDayMinusFourth * 1.0f)) * 100;
 
         model.addAttribute("countEggOfSecondHaleByDescDateMinusFourth"
                 , String.format("%.2f",percentHaleSecondCurrentDayMinusFourth));
@@ -530,7 +574,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensThirdAboutCurrentDayMinusSix();
 
         float percentHaleThirdCurrentDayMinusSix
-                = (countEggOfThirdHaleByDescDateCurrentDayMinusSixDay / (countHensOfThirdHaleByDescDateCurrentDayMinusSix * 1.0f)) * 100;
+                = (countEggOfThirdHaleByDescDateCurrentDayMinusSixDay  / (countHensOfThirdHaleByDescDateCurrentDayMinusSix * 1.0f)) * 100;
 
         model.addAttribute("countEggOfThirdHaleByDescDateMinusSix"
                 , String.format("%.2f",percentHaleThirdCurrentDayMinusSix));
@@ -570,7 +614,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensFourthAboutCurrentDayMinusOne();
 
         float percentHaleFourthCurrentDayMinusOne
-                = (countEggOfFourthHaleByDescDateCurrentDayMinusOneDay / (countHensOfFourthHaleByDescDateCurrentDayMinusOne * 1.0f)) * 100;
+                = (countEggOfFourthHaleByDescDateCurrentDayMinusOneDay/ (countHensOfFourthHaleByDescDateCurrentDayMinusOne * 1.0f)) * 100;
 
         model.addAttribute("countEggOfFourthHaleByDescDateMinusOne"
                 , String.format("%.2f",percentHaleFourthCurrentDayMinusOne));
@@ -583,7 +627,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensFourthAboutCurrentDayMinusTwo();
 
         float percentHaleFourthCurrentDayMinusTwo
-                = (countEggOfFourthHaleByDescDateCurrentDayMinusTwoDay / (countHensOfFourthHaleByDescDateCurrentDayMinusTwo * 1.0f)) * 100;
+                = (countEggOfFourthHaleByDescDateCurrentDayMinusTwoDay/ (countHensOfFourthHaleByDescDateCurrentDayMinusTwo * 1.0f)) * 100;
 
         model.addAttribute("countEggOfFourthHaleByDescDateMinusTwo"
                 , String.format("%.2f",percentHaleFourthCurrentDayMinusTwo));
@@ -610,7 +654,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensFourthAboutCurrentDayMinusFourth();
 
         float percentHaleFourthCurrentDayMinusFourth
-                = (countEggOfFourthHaleByDescDateCurrentDayMinusFourthDay / (countHensOfFourthHaleByDescDateCurrentDayMinusFourth * 1.0f)) * 100;
+                = (countEggOfFourthHaleByDescDateCurrentDayMinusFourthDay  / (countHensOfFourthHaleByDescDateCurrentDayMinusFourth * 1.0f)) * 100;
 
         model.addAttribute("countEggOfFourthHaleByDescDateMinusFourth"
                 , String.format("%.2f",percentHaleFourthCurrentDayMinusFourth));
@@ -649,7 +693,7 @@ public class HomeController {
                 = hensAddService.getCountOfHensFourthAboutCurrentDayMinusSeven();
 
         float percentHaleFourthCurrentDayMinusSeven
-                = (countEggOfFourthHaleByDescDateCurrentDayMinusSevenDay / (countHensOfFourthHaleByDescDateCurrentDayMinusSeven * 1.0f)) * 100;
+                = (countEggOfFourthHaleByDescDateCurrentDayMinusSevenDay  / (countHensOfFourthHaleByDescDateCurrentDayMinusSeven * 1.0f)) * 100;
 
         model.addAttribute("countEggOfFourthHaleByDescDateMinusSeven"
                 , String.format("%.2f",percentHaleFourthCurrentDayMinusSeven));

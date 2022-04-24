@@ -17,6 +17,7 @@ public class EggAddBindingModel {
 
     private CategoryEggEnum categoryEgg;
     private CategoryCartonsEnum categoryCartons;
+    private CategoryCartonsEnum coreyInCartons;
     private CategoryBaseEnum categoryBase;
     private CategoryHaleEnum categoryHale;
     private Long countOfEgg;
@@ -41,6 +42,14 @@ public class EggAddBindingModel {
 
     public void setCategoryCartons(CategoryCartonsEnum categoryCartons) {
         this.categoryCartons = categoryCartons;
+    }
+
+    public CategoryCartonsEnum getCoreyInCartons() {
+        return coreyInCartons;
+    }
+
+    public void setCoreyInCartons(CategoryCartonsEnum coreyInCartons) {
+        this.coreyInCartons = coreyInCartons;
     }
 
     @NotNull(message = "Cannot be empty")

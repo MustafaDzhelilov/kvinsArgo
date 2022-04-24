@@ -5,5 +5,6 @@ import java.util.List;
 
 public enum UserRoleEnum {
     USER,
-    ADMIN;
+    ADMIN,
+    STAFF;
 }

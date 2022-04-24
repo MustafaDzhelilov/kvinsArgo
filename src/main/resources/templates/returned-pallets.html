@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+
+
+
+<head th:replace="fragments/fragment::head">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>"Квинс-арго"ЕООД</title>
+  <link rel="stylesheet" href="/css/reset-css.css"/>
+  <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:replace="fragments/fragment::nav"></header>
+<main>
+  <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Върнати палети</span></h1>
+  <hr class="hr-3 w-25 bg-white"/>
+  <form class="mx-auto w-25 bg-blur rounded" th:object="${returnedPalletsBindingModel}" th:method="POST" th:action="@{/egg/returned-pallets}">
+
+    <div class="form-group">
+      <div class="text-white label-holder d-flex justify-content-center">
+        <label for="category" class="h4 mb-2">Клиент</label>
+      </div>
+      <select th:field="*{clientEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="category" name="category">
+        <option value="">Избери клиент</option>
+        <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.ClientEnum).values()}"
+                th:text="${c}" th:value="${c}"></option>
+      </select>
+      <small th:if="${#fields.hasErrors('clientEnum')}" th:errors="*{clientEnum}" class="text-danger">Hale error message</small>
+    </div>
+
+    <div class="form-group">
+      <div class="text-white label-holder d-flex justify-content-center">
+        <label for="category" class="h4 mb-2">База</label>
+      </div>
+      <select th:field="*{categoryBaseEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryo" name="category">
+        <option value="">Избери клиент</option>
+        <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum).values()}"
+                th:text="${c}" th:value="${c}"></option>
+      </select>
+      <small th:if="${#fields.hasErrors('categoryBaseEnum')}" th:errors="*{categoryBaseEnum}" class="text-danger">Hale error message</small>
+    </div>
+
+    <div class="form-group">
+      <div class="text-white label-holder d-flex justify-content-center">
+        <label for="category" class="h4 mb-2">Вид палет</label>
+      </div>
+      <select th:field="*{palletTypeEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categories" name="category">
+        <option value="">Избери вид</option>
+        <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.PalletTypeEnum).values()}"
+                th:text="${c}" th:value="${c}"></option>
+      </select>
+      <small th:if="${#fields.hasErrors('palletTypeEnum')}" th:errors="*{palletTypeEnum}" class="text-danger">Hale error message</small>
+    </div>
+
+    <div class="form-group">
+      <div class="label-holder text-white textCol d-flex justify-content-center">
+        <label for="count" class="h4 mb-2">Брой</label>
+      </div>
+      <input th:field="*{countReturned}" th:errorclass="bg-danger" type="number" step="0.1" class="form-control" id="count" name="count"/>
+      <small th:if="${#fields.hasErrors('countReturned')}" th:errors="*{countReturned}" class="text-danger">Count error message</small>
+    </div>
+
+    <div class="form-group">
+      <div class="label-holder text-white textCol d-flex justify-content-center">
+        <label for="neededBefore" class="h4 mb-2">Дата</label>
+      </div>
+      <input th:field="*{returnedDate}" th:errorclass="bg-danger" type="date" class="form-control" id="neededBefore" name="neededBefore"/>
+      <small th:if="${#fields.hasErrors('returnedDate')}" th:errors="*{returnedDate}" class="text-danger">Needed before date error</small>
+    </div>
+
+    <div class="button-holder d-flex justify-content-center">
+      <button type="submit" class="btn btn-warning  mb-3" value="Register">Добави</button>
+    </div>
+  </form>
+</main>
+
+<footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+</body>
+</html>

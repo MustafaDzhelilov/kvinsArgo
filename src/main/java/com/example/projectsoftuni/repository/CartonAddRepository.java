@@ -6,6 +6,7 @@ import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -15,5 +16,7 @@ public interface CartonAddRepository extends JpaRepository<Cartons, Long> {
 
     // For Scheduling
     List<Cartons> findTopByBaseAndCartons(CategoryBaseEnum base, CategoryCartonsEnum categoryCartonsEnum);
+
+    List<Cartons> findCartonsByDateBetween(LocalDateTime from, LocalDateTime to);
 
 }

@@ -17,12 +17,80 @@
     <div sec:authorize="isAuthenticated()" class="topnavv" id="myTopnav">
         <a  class="nav-link text-white active h5" th:href="@{/home}" sec:authorize="isAuthenticated()">Квинс агро ЕООД</a>
         <a  class="nav-link text-white  h5" th:href="@{/admin/all-users}" sec:authorize="hasRole('ADMIN')">Админ панел</a>
-        <a  class="nav-link text-white  h5" th:href="@{/products/add}" sec:authorize="hasRole('ADMIN')">Добавяне на яйца</a>
-        <a  class="nav-link text-white h5" th:href="@{/hales/add}" sec:authorize="hasRole('ADMIN')">Добавяне на кокошки</a>
-        <a  class="nav-link text-white  h5" th:href="@{/hales/delete}" sec:authorize="hasRole('ADMIN')">Оптисване кокошки</a>
-        <a  class="nav-link text-white  h5" th:href="@{/cartons/add-cartons}" sec:authorize="hasRole('ADMIN')">Добавяне на амбалаж</a>
-        <a  class="nav-link text-white  h5" th:href="@{/clients/add-client}" sec:authorize="hasRole('ADMIN')">Добавяне на клиент</a>
-        <a  class="nav-link text-white  h5" th:href="@{/egg/sells}" sec:authorize="hasRole('ADMIN')">Продажби</a>
+
+        <div class="dropdownn" >
+            <button class="dropbtnn">Продажби
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content" >
+                <a   th:href="@{/egg/validation}" sec:authorize="hasRole('ADMIN')">Вътрешен пазар</a>
+                <a   th:href="@{/egg/export}" sec:authorize="hasRole('ADMIN')">Износ</a>
+                <a   th:href="@{/egg/sell-from-packaging}" sec:authorize="hasRole('ADMIN')">От пакетаж</a>
+
+            </div>
+        </div>
+
+        <div class="dropdownn">
+            <button class="dropbtnn">Приспадане
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content">
+                <a   th:href="@{/hales/delete}" sec:authorize="hasRole('ADMIN')">Оптисване кокошки</a>
+                <a   th:href="@{/eaten/consuming}" sec:authorize="hasRole('ADMIN')">Конс. фураж</a>
+                <a   th:href="@{/material/add_base}" sec:authorize="hasRole('ADMIN')">Разпределяне на материали по бази</a>
+                <a   th:href="@{/material/subtraction}" sec:authorize="hasRole('ADMIN')">Изписване на материали от база</a>
+                <a   th:href="@{/fodder/add}" sec:authorize="hasRole('ADMIN')">Разпределяне на фураж по силози</a>
+            </div>
+        </div>
+
+        <div class="dropdownn">
+            <button class="dropbtnn">Добавяне
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content">
+                <a   th:href="@{/products/add}" sec:authorize="hasRole('ADMIN')">Добавяне на яйца</a>
+                <a   th:href="@{/residue/packaging-lower}" sec:authorize="hasRole('ADMIN')">Изчистване на остатък ДБ</a>
+                <a   th:href="@{/residue/packaging-upper}" sec:authorize="hasRole('ADMIN')">Изчистване на остатък ГБ</a>
+                <a   th:href="@{/hales/add}" sec:authorize="hasRole('ADMIN')">Добавяне на кокошки</a>
+                <a   th:href="@{/cartons/add-cartons}" sec:authorize="hasRole('ADMIN')">Добавяне на амбалаж</a>
+                <a   th:href="@{/clients/add-client}" sec:authorize="hasRole('ADMIN')">Добавяне на клиент</a>
+                <a   th:href="@{/fodder/add-main}" sec:authorize="hasRole('ADMIN')">Добавяне на фураж</a>
+                <a  th:href="@{/material/add}" sec:authorize="hasRole('ADMIN')">Добавяне на материали</a>
+                <a  th:href="@{/pallets-count/add}" sec:authorize="hasRole('ADMIN')">Добавяне на палети</a>
+                <a  th:href="@{/pallets-count/transfer}" sec:authorize="hasRole('ADMIN')">Прехвърляне на палети м/у бази</a>
+                <a  th:href="@{/cartons/transfer-cartons}" sec:authorize="hasRole('ADMIN')">Прехвърляне на амбалаж м/у бази</a>
+            </div>
+        </div>
+
+        <div class="dropdownn">
+            <button class="dropbtnn">Заявки
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content">
+                <a  th:href="@{/request/add}" sec:authorize="hasRole('ADMIN')">Създаване на зявка</a>
+                <a   th:href="@{/request/view}" sec:authorize="isAuthenticated()">Състояние на заявките</a>
+                <a   th:href="@{/request/all-requests}" sec:authorize="isAuthenticated()">Редактиране на заявките</a>
+            </div>
+        </div>
+
+
+        <div class="dropdownn">
+            <button class="dropbtnn">Пакетаж
+                <i class="fa fa-caret-downn"></i>
+            </button>
+            <div class="dropdownn-content">
+                <a  th:href="@{/packing/add}" sec:authorize="isAuthenticated()">Прехвърляне към пакетаж</a>
+                <a  th:href="@{/packing/count-egg-before-packing}" sec:authorize="isAuthenticated()">Наличност преди пакетиране</a>
+                <a  th:href="@{/packing/count-egg-after-packing}" sec:authorize="isAuthenticated()">Наличност след пакетиране</a>
+                <a  th:href="@{/packing/create-new-product}" sec:authorize="isAuthenticated()">Пакетиране</a>
+                <a  th:href="@{/packing/history}" sec:authorize="isAuthenticated()">История</a>
+                <a  th:href="@{/packing/add-cartons-for-packaging}" sec:authorize="isAuthenticated()">Добавяне на амбалаж</a>
+                <a  th:href="@{/packing/count-carton-packing}" sec:authorize="isAuthenticated()">Наличност амбалаж в пакетаж</a>
+                <a  th:href="@{/packing/count-cartons-for-transfer}" sec:authorize="isAuthenticated()">Освободен амбалаж в пакетаж</a>
+                <a  th:href="@{/packing/transfer-carton-to-base}" sec:authorize="isAuthenticated()">Връщане на амбалаж по базите</a>
+                <a  th:href="@{/packing/sell-from-packaging-view}" sec:authorize="isAuthenticated()">Всички продажби направени от пакетаж</a>
+            </div>
+        </div>
 
         <div class="dropdownn">
             <button class="dropbtnn">Справки
@@ -34,6 +102,20 @@
                 <a   th:href="@{/count-cartons-now}" sec:authorize="isAuthenticated()">Наличност амбалаж</a>
                 <a   th:href="@{/percentage-table}" sec:authorize="isAuthenticated()">Процентна таблица</a>
                 <a   th:href="@{/egg/all-sells}" sec:authorize="isAuthenticated()">Всички продажби</a>
+                <a   th:href="@{/eaten/reference-consuming-lower}" sec:authorize="isAuthenticated()">Справка фураж ДБ</a>
+                <a   th:href="@{/eaten/reference-consuming-upper}" sec:authorize="isAuthenticated()">Справка фураж ГБ</a>
+                <a   th:href="@{/pallets-count/now}" sec:authorize="isAuthenticated()">Справка за палети по клиенти</a>
+                <a   th:href="@{/pallets-count/totalCount}" sec:authorize="isAuthenticated()">Справка за палети по бази</a>
+                <a   th:href="@{/material/now}" sec:authorize="isAuthenticated()">Справки за материали</a>
+                <a   th:href="@{/material/issued}" sec:authorize="isAuthenticated()">Справки за изразходени материали от-до</a>
+                <a   th:href="@{/cartons/issued}" sec:authorize="isAuthenticated()">Справки за изразходен амбалаж от-до</a>
+                <a   th:href="@{/search/sell}" sec:authorize="isAuthenticated()">Търси по категория от-до</a>
+                <a   th:href="@{/search/sell-view-with-client}" sec:authorize="isAuthenticated()">Търси по клиент от-до</a>
+                <a   th:href="@{/search/total-price}" sec:authorize="isAuthenticated()">Справка за продадена продукция в лв от-до по клиенти</a>
+                <a   th:href="@{/fodder/search-fodder}" sec:authorize="isAuthenticated()">Справка за получено количество фураж от-до</a>
+                <a   th:href="@{/fodder/free-space-in-all-silo}" sec:authorize="isAuthenticated()">Справка за налични кг и свободно място по силози</a>
+                <a   th:href="@{/fodder/last-eat}" sec:authorize="isAuthenticated()">Справка за последно хранене</a>
+                <a   th:href="@{/products/all-records-egg}" sec:authorize="isAuthenticated()">Таблица яйца</a>
             </div>
         </div>
         <a  class="nav-link text-white  h5" th:href="@{/users/logout}" sec:authorize="isAuthenticated()">Излез</a>
@@ -42,7 +124,7 @@
 <footer  th:fragment="footer" class="footer bg-transparent  py-2">
     <div class="container-fluid text-center">
         <div class="footer-background h5 text-white">
-            &copy; "Квинс-арго" ЕООД.
+             <p><i>&copy; М.Джелилов</i></p>
         </div>
     </div>
 </footer>

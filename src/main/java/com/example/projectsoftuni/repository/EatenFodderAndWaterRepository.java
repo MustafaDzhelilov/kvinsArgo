@@ -13,8 +13,10 @@ import java.util.List;
 @Repository
 public interface EatenFodderAndWaterRepository extends JpaRepository<EatenFodderAndWater, Long> {
 
-    EatenFodderAndWater getEatenFodderAndWaterBySiloEnumAndAcceptedTimeOrderByKilogramOfFodder(CategorySiloEnum siloEnum, LocalDate acceptedTime);
+    List<EatenFodderAndWater> getEatenFodderAndWaterBySiloEnumAndAcceptedTimeOrderByKilogramOfFodder(CategorySiloEnum siloEnum, LocalDate acceptedTime);
 
-    EatenFodderAndWater getEatenFodderAndWaterBySiloEnumAndAcceptedTimeOrderByLitreOfWater(CategorySiloEnum siloEnum, LocalDate acceptedTime);
+    List<EatenFodderAndWater> getEatenFodderAndWaterBySiloEnumAndAcceptedTimeOrderByLitreOfWater(CategorySiloEnum siloEnum, LocalDate acceptedTime);
+
+    List<EatenFodderAndWater> findFirstBySiloEnumOrderByIdDesc(CategorySiloEnum siloEnum);
 
 }

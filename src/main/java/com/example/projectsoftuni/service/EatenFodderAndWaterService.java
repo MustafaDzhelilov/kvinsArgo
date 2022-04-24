@@ -250,4 +250,22 @@ public interface EatenFodderAndWaterService {
     Long findLastRecordsByCategoryHale9MinSix();
 
     Long getLitreOfWaterHale9MinSix();
+
+    Long getLastEatenKgSilo1();
+
+    Long getLastEatenKgSilo2();
+
+    Long getLastEatenKgSilo3();
+
+    Long getLastEatenKgSilo4();
+
+    Long getLastEatenKgSilo5();
+
+    Long getLastEatenKgSilo6();
+
+    Long getLastEatenKgSilo7();
+
+    Long getLastEatenKgSilo8();
+
+    Long getLastEatenKgSilo9();
 }

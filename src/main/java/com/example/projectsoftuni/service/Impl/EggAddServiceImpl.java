@@ -2,20 +2,24 @@ package com.example.projectsoftuni.service.Impl;
 
 import com.example.projectsoftuni.model.entity.Cartons;
 import com.example.projectsoftuni.model.entity.Egg;
+import com.example.projectsoftuni.model.entity.ResidueOfExtraction;
 import com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum;
 import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
 import com.example.projectsoftuni.model.entity.enums.CategoryEggEnum;
 import com.example.projectsoftuni.model.entity.enums.CategoryHaleEnum;
 import com.example.projectsoftuni.model.service.CartonServiceModel;
 import com.example.projectsoftuni.model.service.EggServiceModel;
+import com.example.projectsoftuni.model.service.ResidueOfExtractionServiceModel;
 import com.example.projectsoftuni.repository.CartonAddRepository;
 import com.example.projectsoftuni.repository.EggAddRepository;
+import com.example.projectsoftuni.repository.ResidueOfExtractionRepository;
 import com.example.projectsoftuni.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EggAddServiceImpl implements EggAddService {
@@ -29,10 +33,15 @@ public class EggAddServiceImpl implements EggAddService {
     private final CartonAddService cartonAddService;
     private final CartonServiceModel cartonServiceModel;
     private final CartonAddRepository cartonAddRepository;
+    private final ResidueOfExtractionServiceModel residueOfExtractionServiceModel;
+    private final ResidueOfExtractionRepository residueOfExtractionRepository;
+    int equalTypeCarton = 0;
+    int wrongCoreyInXL = 0;
+    int wrongCoreyLMS = 0;
 
 
     public EggAddServiceImpl(EggAddRepository eggAddRepository, ModelMapper modelMapper, EggCategoryService eggCategoryService
-            , BaseCategoryService baseCategoryService, CartonCategoryService cartonCategoryService, HaleCategoryService haleCategoryService, CartonAddService cartonAddService, CartonServiceModel cartonServiceModel, CartonAddRepository cartonAddRepository) {
+            , BaseCategoryService baseCategoryService, CartonCategoryService cartonCategoryService, HaleCategoryService haleCategoryService, CartonAddService cartonAddService, CartonServiceModel cartonServiceModel, CartonAddRepository cartonAddRepository, ResidueOfExtractionServiceModel residueOfExtractionServiceModel, ResidueOfExtractionRepository residueOfExtractionRepository) {
         this.eggAddRepository = eggAddRepository;
         this.modelMapper = modelMapper;
         this.eggCategoryService = eggCategoryService;
@@ -43,6 +52,8 @@ public class EggAddServiceImpl implements EggAddService {
         this.cartonAddService = cartonAddService;
         this.cartonServiceModel = cartonServiceModel;
         this.cartonAddRepository = cartonAddRepository;
+        this.residueOfExtractionServiceModel = residueOfExtractionServiceModel;
+        this.residueOfExtractionRepository = residueOfExtractionRepository;
     }
 
     @Override
@@ -50,8 +61,10 @@ public class EggAddServiceImpl implements EggAddService {
         Egg egg = modelMapper.map(eggServiceModel, Egg.class);
         egg.setEgg(eggServiceModel.getEgg());
         egg.setBase(eggServiceModel.getBase());
+        egg.setCoreyInCartons(eggServiceModel.getCoreyInCartons());
         egg.setCartons(eggServiceModel.getCartons());
         egg.setHale(eggServiceModel.getHale());
+
 
         //  За намаляне на бройката от картони/кори след като се направи добавяне на яйца
         Cartons cartons =  modelMapper.map(cartonServiceModel, Cartons.class);
@@ -59,96 +72,711 @@ public class EggAddServiceImpl implements EggAddService {
         cartons.setBase(eggServiceModel.getBase());
         LocalDateTime date = LocalDateTime.now();
         cartons.setDate(date);
+
+        Cartons coreyInCartons = modelMapper.map(cartonServiceModel, Cartons.class);
+        coreyInCartons.setCartons(eggServiceModel.getCoreyInCartons());
+        coreyInCartons.setBase(eggServiceModel.getBase());
+        coreyInCartons.setDate(LocalDateTime.now());
+
+        ResidueOfExtraction residueOfExtraction = modelMapper.map(residueOfExtractionServiceModel, ResidueOfExtraction.class);
+        residueOfExtraction.setBase(eggServiceModel.getBase());
+        residueOfExtraction.setEgg(eggServiceModel.getEgg());
+        residueOfExtraction.setHale(eggServiceModel.getHale());
+        residueOfExtraction.setAddDate(eggServiceModel.getAddDate());
+
         int  isZero = 1;
 
         if(egg.getBase().equals(CategoryBaseEnum.LOWER)
                 && egg.getCartons().equals(CategoryCartonsEnum.COREY_20)){
 
-            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 20;
-            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore120FromBaseLowerLast();
-            if(countOfCorey20FromLowerBase == 0){
-                isZero = 0;
-            }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
 
-        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
-                && egg.getCartons().equals(CategoryCartonsEnum.CARTONS_120)){
+               Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 20;
+                Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore120FromBaseLower();
+                if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                    isZero = 0;
+                }
+                residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 20)); // Остатъка, която не се дели точно на избрания амбалаж се запаметява в таблица остатък
+                cartons.setCount(-divideCountOfEgg);
 
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_120)) {
             Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 120;
             Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton120FromBaseLower();
-            if(countOfCorey20FromLowerBase == 0){
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg *120));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
 
-        } else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
-                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30)){
-
-            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
-            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore180FromBaseLower();
-            if(countOfCorey20FromLowerBase == 0){
-                isZero = 0;
-            }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
-
-        } else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
-                && egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180)){
-
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180_WHITE)) {
             Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 180;
             Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton180FromBaseLower();
-            if(countOfCorey20FromLowerBase == 0){
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
 
-        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
-                && egg.getCartons().equals(CategoryCartonsEnum.COREY_20)){
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 180));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
 
-            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 20;
-            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore120FromBaseUpper();
-            if(countOfCorey20FromLowerBase == 0){
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180_BROWN)) {
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 180;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton180FromBaseLowerBrown();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
 
-        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
-                && egg.getCartons().equals(CategoryCartonsEnum.CARTONS_120)){
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 180));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
 
-            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 120;
-            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton120FromBaseUpper();
-            if(countOfCorey20FromLowerBase == 0){
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_360_BROWN)) {
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 360;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton360FromBaseLowerBrown();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
 
-        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
-                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30)){
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 360));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_FAMILY)){
+
+           Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyFamilyLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_CHEZ)){
 
             Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
-            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore180FromBaseUpper();
-            if(countOfCorey20FromLowerBase == 0){
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyChezLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
 
-        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
-                && egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180)){
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
 
+        }  else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_EURO)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyEuroLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_HARTMAN)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyHartmanLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_UKRAYNA)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyUkraynaLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_ELPA)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyElpaLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_EKO_FARM)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyEkoFarmLower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_NEW1)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyNew1Lower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.LOWER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_NEW2)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyNew2Lower();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_20)){
+
+           Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 20;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCore120FromBaseUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 20));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_120)) {
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 120;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton120FromBaseUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 120));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180_WHITE)) {
             Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 180;
             Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton180FromBaseUpper();
-            if(countOfCorey20FromLowerBase == 0){
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
                 isZero = 0;
             }
-            cartons.setCount(countOfCorey20FromLowerBase - divideCountOfEgg);
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 180));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_180_BROWN)) {
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 180;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton180FromBaseUpperBrown();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 180));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER) &&
+                egg.getCartons().equals(CategoryCartonsEnum.CARTONS_360_BROWN)) {
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 360;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountOfCarton360FromBaseUpperBrown();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 360));
+            cartons.setCount(-divideCountOfEgg);
+            coreyInCartons.setCount(-divideCountOfEgg * 8);
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_UKRAYNA)) {
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyUkraynaUpper();
+            if (countOfCorey20FromLowerBase < divideCountOfEgg) {
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_ELPA)) {
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyElpaUpper();
+            if (countOfCorey20FromLowerBase < divideCountOfEgg) {
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_EKO_FARM)) {
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyEkoFarmUpper();
+            if (countOfCorey20FromLowerBase < divideCountOfEgg) {
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_NEW1)) {
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyNew1Upper();
+            if (countOfCorey20FromLowerBase < divideCountOfEgg) {
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_NEW2)) {
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyNew2Upper();
+            if (countOfCorey20FromLowerBase < divideCountOfEgg) {
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+
+        }else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_HARTMAN)){
+
+           Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyHartmanUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_EURO)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyEuroUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_FAMILY)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyFamilyUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
+
+        } else if(egg.getBase().equals(CategoryBaseEnum.UPPER)
+                && egg.getCartons().equals(CategoryCartonsEnum.COREY_30_CHEZ)){
+
+            Long divideCountOfEgg = (eggServiceModel.getCountOfEgg()) / 30;
+            Long countOfCorey20FromLowerBase = cartonAddService.getCountCoreyChezUpper();
+            if(countOfCorey20FromLowerBase < divideCountOfEgg){
+                isZero = 0;
+            }
+
+            residueOfExtraction.setCountOfEgg(eggServiceModel.getCountOfEgg() - (divideCountOfEgg * 30));
+            cartons.setCount(-divideCountOfEgg);
 
         }
 
-        if(isZero == 1) {
+        if(eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_30_HARTMAN ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_30_CHEZ ||
+            eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_30_FAMILY ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_30_EURO ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_UKRAYNA ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_ELPA ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_EKO_FARM ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_NEW1 ||
+                eggServiceModel.getCartons() == CategoryCartonsEnum.COREY_NEW2 &&
+                        eggServiceModel.getCoreyInCartons() != null){
+            equalTypeCarton = 1;
+        }
+
+        if(eggServiceModel.getCartons() == CategoryCartonsEnum.CARTONS_120 &&
+        eggServiceModel.getCoreyInCartons() != CategoryCartonsEnum.COREY_20){
+            wrongCoreyInXL = 1;
+        }
+
+        if(eggServiceModel.getEgg() == CategoryEggEnum.XL &&
+                eggServiceModel.getCartons() != CategoryCartonsEnum.CARTONS_120 &&
+                eggServiceModel.getCoreyInCartons() != CategoryCartonsEnum.COREY_20){
+            wrongCoreyInXL = 1;
+        }
+        if(eggServiceModel.getEgg() == CategoryEggEnum.XL &&
+                eggServiceModel.getCartons() == CategoryCartonsEnum.CARTONS_120 &&
+                eggServiceModel.getCoreyInCartons() != CategoryCartonsEnum.COREY_20){
+            wrongCoreyInXL = 1;
+        }
+        if(eggServiceModel.getEgg() == CategoryEggEnum.XL &&
+                eggServiceModel.getCartons() != CategoryCartonsEnum.CARTONS_120){
+            wrongCoreyInXL = 1;
+        }
+
+        if(eggServiceModel.getEgg() == CategoryEggEnum.L
+                && eggServiceModel.getCartons() ==  CategoryCartonsEnum.CARTONS_120){
+            wrongCoreyLMS = 1;
+        }
+
+        if(eggServiceModel.getEgg() == CategoryEggEnum.M
+                && eggServiceModel.getCartons() == CategoryCartonsEnum.CARTONS_120){
+            wrongCoreyLMS = 1;
+        }
+
+        if(eggServiceModel.getEgg() == CategoryEggEnum.S
+                && eggServiceModel.getCartons() == CategoryCartonsEnum.CARTONS_120){
+            wrongCoreyLMS = 1;
+        }
+
+        if(isZero == 1 && equalTypeCarton == 0 && wrongCoreyInXL == 0 && wrongCoreyLMS == 0) {
             eggAddRepository.save(egg);
             cartonAddRepository.save(cartons);
+            residueOfExtractionRepository.save(residueOfExtraction);
+            if(eggServiceModel.getCoreyInCartons() != null){
+                cartonAddRepository.save(coreyInCartons);
+            }
+
         }
 
     }
+
+    @Override
+    public int equalsTypeCartons() {
+        int result;
+        if(equalTypeCarton == 1){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        return result;
+    }
+
+    @Override
+    public int wrongCoreyInXL() {
+        int result;
+        if(wrongCoreyInXL == 1){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        return result;
+    }
+
+    @Override
+    public int wrongCoreyLMS() {
+        int result;
+        if(wrongCoreyLMS ==1){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        return result;
+    }
+
+    @Override
+    public Long findCoreyUkraynaLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1LowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2LowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1LowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2LowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1LowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2LowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaLowerBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaLowerBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmLowerBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1LowerBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2LowerBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1UpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2UpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1UpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2UpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1UpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2UpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyUkraynaUpperBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_UKRAYNA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyElpaUpperBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_ELPA)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEkoFarmUpperBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_EKO_FARM)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew1UpperBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW1)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyNew2UpperBROKEN() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_NEW2)
+                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public List<Egg> checkCountOfImport(LocalDate now) {
+        return eggAddRepository.findByAddDate(LocalDate.now());
+    }
+
+    @Override
+    public List<Egg> findAll() {
+        return eggAddRepository.findAll();
+    }
+
+    @Override
+    public void deleteLocation(Long id) {
+        eggAddRepository.deleteById(id);
+    }
+
 
     @Override
     public Long findByCategoryXL() {
@@ -192,47 +820,27 @@ public class EggAddServiceImpl implements EggAddService {
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryLCoreyLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategoryLCartonLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryMCoreyLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategoryMCartonLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategorySCoreyLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategorySCartonLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryBrokenLower() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategoryXLUpper() {
@@ -246,47 +854,27 @@ public class EggAddServiceImpl implements EggAddService {
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryLCoreyUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategoryLCartonsUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryMCoreyUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategoryMCartonsUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategorySCoreyUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     @Override
     public Long findByCategorySCartonUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180)
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_WHITE)
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
 
-    @Override
-    public Long findByCategoryBrokenUpper() {
-        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30)
-                .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
-    }
 
     // За броя на яйцата от Първо хале за  текущия ден
     @Override
@@ -738,5 +1326,314 @@ public class EggAddServiceImpl implements EggAddService {
                 .stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
     }
     // Край на процентната таблица
+
+    @Override
+    public Long findCoreyChezBaseLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyBaseLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanBaseLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroBaseLowerL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCartons180BaseLowerBrownL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCartons360BaseLowerBrownL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezBaseLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroBaseLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanBaseLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyBaseLowerM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findByCarton180BaseLowerBrownM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findByCarton360BaseLowerBrownM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyBaseLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezBaseLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanBaseLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroBaseLowerS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180BaseLowerBrownS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360BaseLowerBrownS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyLowerBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroLowerBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanLowerBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezLowerBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findByCartonLowerBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_WHITE).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyUpperL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180UpperBrownL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360UpperBrownL() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.L, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezUpperM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180UpperBrownM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360UpperBrownM() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.M, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroUpperS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180UpperBrownS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360UpperBrownS() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.S, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyEuroUpperBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_EURO).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyChezUpperBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_CHEZ).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyHartmanUpperBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_HARTMAN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCoreyFamilyUpperBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.COREY_30_FAMILY).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCartonUpperBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_WHITE).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360BaseUpperBrownBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180BaseUpperBrownBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.UPPER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton360BaseLowerBrownBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_360_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long findCarton180BaseLowerBrownBroken() {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(CategoryEggEnum.BROKEN, CategoryBaseEnum.LOWER, CategoryCartonsEnum.CARTONS_180_BROWN).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+    @Override
+    public Long getCountEgg(CategoryBaseEnum categoryBaseEnum, CategoryEggEnum categoryEggEnum, CategoryCartonsEnum categoryCartonsEnum) {
+        return eggAddRepository.findAllByEggAndBaseAndCartons(categoryEggEnum, categoryBaseEnum, categoryCartonsEnum).
+                stream().map(Egg::getCountOfEgg).reduce(Long::sum).orElse(0L);
+    }
+
+
+
 
 }

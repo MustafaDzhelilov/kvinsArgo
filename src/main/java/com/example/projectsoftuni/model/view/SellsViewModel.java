@@ -1,9 +1,6 @@
 package com.example.projectsoftuni.model.view;
 
-import com.example.projectsoftuni.model.entity.Client;
-import com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryEggEnum;
+import com.example.projectsoftuni.model.entity.enums.*;
 
 import java.time.LocalDate;
 
@@ -15,7 +12,9 @@ public class SellsViewModel {
     private Long countOfEgg;
     private CategoryCartonsEnum cartons;
     private LocalDate addDate;
-    private Client client;
+    private ClientEnum clientEnum;
+    private PalletTypeEnum palletTypeEnum;
+    private Long countIssuedPallets;
 
     public SellsViewModel() {
     }
@@ -68,11 +67,27 @@ public class SellsViewModel {
         this.addDate = addDate;
     }
 
-    public Client getClient() {
-        return client;
+    public ClientEnum getClientEnum() {
+        return clientEnum;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientEnum(ClientEnum clientEnum) {
+        this.clientEnum = clientEnum;
+    }
+
+    public PalletTypeEnum getPalletTypeEnum() {
+        return palletTypeEnum;
+    }
+
+    public void setPalletTypeEnum(PalletTypeEnum palletTypeEnum) {
+        this.palletTypeEnum = palletTypeEnum;
+    }
+
+    public Long getCountIssuedPallets() {
+        return countIssuedPallets;
+    }
+
+    public void setCountIssuedPallets(Long countIssuedPallets) {
+        this.countIssuedPallets = countIssuedPallets;
     }
 }

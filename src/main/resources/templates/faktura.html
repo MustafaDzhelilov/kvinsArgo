@@ -116,18 +116,18 @@
 <body>
 <div class="container" th:method="GET">
     <div class="inv-title">
-        <h1>Фактура номер <p th:text="*{countOfInvoice}"></p></p></h1>
+        <h1>Стокова разписка<p ></p></p></h1>
     </div>
     <img src="/static/image/logo.jpg" class="inv-logo" />
     <div class="inv-header">
         <div>
             <h2>Получател</h2>
             <ul>
-                <li th:text="*{currentClient.getClient().bulstat}"></li>
-                <li th:text="*{currentClient.getClient().dds}"></li>
-                <li th:text="*{currentClient.getClient().firmName}"></li>
-                <li th:text="*{currentClient.getClient().adress}"></li>
-                <li th:text="*{currentClient.getClient().name}"></li>
+                <li ></li>
+                <li ></li>
+                <li ></li>
+                <li ></li>
+                <li ></li>
             </ul>
             <h2>Изпращач</h2>
             <ul>
@@ -142,20 +142,8 @@
             <table>
                 <tr>
                     <th>Дата на издаване</th>
-                    <td th:text="*{localDateTime}"></td>
+                    <td ></td>
                 </tr>
-               <!-- <tr>
-                    <th>Due Date</th>
-                    <td>12-02-2018</td>
-                </tr>
-                <tr>
-                    <th>Sub total</th>
-                    <td>6500</td>
-                </tr>
-                <tr>
-                    <th>Total</th>
-                    <td>7000</td>
-                </tr> -->
             </table>
         </div>
     </div>
@@ -166,16 +154,20 @@
             <th>Брой</th>
             <th>Ед.цена</th>
             </thead>
-            <tbody>
-            <tr>
+
+            <tbody >
+            <div th:each="a:${allSells}" th:object="${a}">
+            <tr >
                 <td>
                     <h4>Яйца категория</h4>
-                    <p th:text="*{currentClient.getEgg().name()}"></p>
+                    <p ></p>
                 </td>
-                <td th:text="*{currentClient.getCountOfEgg()}"></td>
-                <td th:text="*{currentClient.getPrice()}"></td>
+                <td th:text="${a.}"></td>
+                <td ></td>
             </tr>
+            </div>
             </tbody>
+
         </table>
     </div>
     <div class="inv-footer">
@@ -184,15 +176,15 @@
             <table>
                 <tr>
                     <th>Сума без ДДС</th>
-                    <td th:text="*{sumWithoutDds}"></td>
+                    <td ></td>
                 </tr>
                 <tr>
                     <th>ДДС</th>
-                    <td th:text="*{dds}"></td>
+                    <td ></td>
                 </tr>
                 <tr>
                     <th>Обща сума с ДДС</th>
-                    <td th:text="*{TotalSumWithDds}"></td>
+                    <td ></td>
                 </tr>
             </table>
 

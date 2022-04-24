@@ -18,6 +18,7 @@ public class Egg extends BaseEntity{
     private CategoryBaseEnum base;
     private Long countOfEgg;
     private CategoryCartonsEnum cartons;
+    private CategoryCartonsEnum coreyInCartons;
     private CategoryHaleEnum hale;
     private LocalDate addDate;
 
@@ -61,6 +62,16 @@ public class Egg extends BaseEntity{
 
     public void setCartons(CategoryCartonsEnum cartons) {
         this.cartons = cartons;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "corey",length = 32, columnDefinition = "varchar(32) default 'UNKNOWN'")
+    public CategoryCartonsEnum getCoreyInCartons() {
+        return coreyInCartons;
+    }
+
+    public void setCoreyInCartons(CategoryCartonsEnum coreyInCartons) {
+        this.coreyInCartons = coreyInCartons;
     }
 
     @Enumerated(EnumType.STRING)

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+
+
+
+<head th:replace="fragments/fragment::head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>"Квинс-арго"ЕООД</title>
+    <link rel="stylesheet" href="/css/reset-css.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:replace="fragments/fragment::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Резултат от търсенето</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+    <form class="mx-auto w-25 bg-blur rounded"  th:method="GET">
+
+        <div class="form-group">
+            <label for="from" class="h4 mb-2">От: </label>
+            <label th:text="${from}" id="from"></label>
+            <br>
+            <label for="to" class="h4 mb-2">До: </label>
+            <label th:text="${to}" id="to"></label>
+            <br>
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="category" class="h4 mb-2">Категория:  </label>
+                <label th:text="${categoryName}" id="category"></label>
+            </div>
+            <label for="count" class="h4 mb-2">Брой: </label>
+            <label th:text="${countFromTo}" id="count"></label>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+</body>
+</html>

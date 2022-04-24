@@ -1,12 +1,11 @@
 package com.example.projectsoftuni.model.entity;
 
-import com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryEggEnum;
+import com.example.projectsoftuni.model.entity.enums.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sells")
@@ -16,9 +15,12 @@ public class Sells extends BaseEntity{
     private CategoryBaseEnum base;
     private Long countOfEgg;
     private CategoryCartonsEnum cartons;
-    private LocalDate addDate;
+    private LocalDateTime addDate;
     private double price;
-    private Client client;
+    private ClientEnum clientEnum;
+    private PalletTypeEnum palletTypeEnum;
+    private double totalPrice;
+    private Long countIssuedPallets;
 
     public Sells() {
     }
@@ -62,22 +64,24 @@ public class Sells extends BaseEntity{
         this.cartons = cartons;
     }
 
+
     @Column(name = "addDate", nullable = false)
-    public LocalDate getAddDate() {
+    public LocalDateTime getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(LocalDate addDate) {
+    public void setAddDate(LocalDateTime addDate) {
         this.addDate = addDate;
     }
 
-    @ManyToOne
-    public Client getClient() {
-        return client;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "client",nullable = false)
+    public ClientEnum getClientEnum() {
+        return clientEnum;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientEnum(ClientEnum clientEnum) {
+        this.clientEnum = clientEnum;
     }
 
     @Column(name = "price", nullable = false)
@@ -87,5 +91,33 @@ public class Sells extends BaseEntity{
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "palletsType",nullable = false)
+    public PalletTypeEnum getPalletTypeEnum() {
+        return palletTypeEnum;
+    }
+
+    public void setPalletTypeEnum(PalletTypeEnum palletTypeEnum) {
+        this.palletTypeEnum = palletTypeEnum;
+    }
+
+    @Column(name = "totalPrice", nullable = false)
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    @Column(name = "issuedPallets", nullable = false)
+    public Long getCountIssuedPallets() {
+        return countIssuedPallets;
+    }
+
+    public void setCountIssuedPallets(Long countIssuedPallets) {
+        this.countIssuedPallets = countIssuedPallets;
     }
 }

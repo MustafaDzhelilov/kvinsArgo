@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+
+
+
+<head th:replace="fragments/fragment::head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>"Квинс-арго"ЕООД</title>
+    <link rel="stylesheet" href="/css/reset-css.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:replace="fragments/fragment::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Връщане на освободения амбалаж към избраната база</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+    <form class="mx-auto w-25 bg-blur rounded" th:object="${coreyFreeAfterPackagingBindingModel}" th:method="POST" th:action="@{/packing/transfer-carton-to-base}">
+
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="category" class="h4 mb-2">База</label>
+            </div>
+            <select th:field="*{categoryBaseEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryu" name="category">
+                <option value="">Избери база</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum).values()}"
+                        th:text="${c}" th:value="${c}"></option>
+            </select>
+            <small th:if="${#fields.hasErrors('categoryBaseEnum')}" th:errors="*{categoryBaseEnum}" class="text-danger">Hale error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="category" class="h4 mb-2">Вид амбалаж</label>
+            </div>
+            <select th:field="*{cartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="category" name="category">
+                <option value="">Избери амбалаж</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
+                        th:text="${c}" th:value="${c}">FIRST</option>
+            </select>
+            <small th:if="${#fields.hasErrors('cartons')}" th:errors="*{cartons}" class="text-danger">Hale error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="count" class="h4 mb-2">Брой</label>
+            </div>
+            <input th:field="*{count}" th:errorclass="bg-danger" type="number" step="0.1" class="form-control" id="count" name="count"/>
+            <small th:if="${#fields.hasErrors('count')}" th:errors="*{count}" class="text-danger">Count error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="neededBefore" class="h4 mb-2">Дата</label>
+            </div>
+            <input th:field="*{date}" th:errorclass="bg-danger" type="date" class="form-control" id="neededBefore" name="neededBefore"/>
+            <small th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger">Needed before date error</small>
+        </div>
+
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Върни</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+</body>
+</html>

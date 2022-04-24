@@ -27,4 +27,8 @@ public interface EggAddRepository extends JpaRepository<Egg, Long> {
 
     List<Egg> findByHaleAndAddDate(CategoryHaleEnum hale, LocalDate addDate);
 
+    List<Egg> findByAddDate(LocalDate addDate);
+
+    List<Egg> findAll();
+
 }

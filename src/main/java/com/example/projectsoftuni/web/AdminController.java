@@ -23,7 +23,6 @@ public class AdminController {
         System.out.println();
         UserViewModel user = userService.findUserById(id);
 
-
         model.addAttribute("user", user);
 
         System.out.println();

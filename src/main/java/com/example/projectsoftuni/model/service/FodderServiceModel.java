@@ -12,7 +12,6 @@ public class FodderServiceModel {
 
     private Long id;
     private CategorySiloEnum siloEnum;
-    private CategorySupplierEnum supplierEnum;
     private Long kilogramOfFodder;
     private LocalDate acceptedTime;
 
@@ -33,14 +32,6 @@ public class FodderServiceModel {
 
     public void setSiloEnum(CategorySiloEnum siloEnum) {
         this.siloEnum = siloEnum;
-    }
-
-    public CategorySupplierEnum getSupplierEnum() {
-        return supplierEnum;
-    }
-
-    public void setSupplierEnum(CategorySupplierEnum supplierEnum) {
-        this.supplierEnum = supplierEnum;
     }
 
     public Long getKilogramOfFodder() {

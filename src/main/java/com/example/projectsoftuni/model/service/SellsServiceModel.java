@@ -1,11 +1,10 @@
 package com.example.projectsoftuni.model.service;
 
-import com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
-import com.example.projectsoftuni.model.entity.enums.CategoryEggEnum;
+import com.example.projectsoftuni.model.entity.enums.*;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Configuration
 public class SellsServiceModel {
@@ -15,9 +14,12 @@ public class SellsServiceModel {
     private CategoryBaseEnum base;
     private Long countOfEgg;
     private CategoryCartonsEnum cartons;
-    private LocalDate addDate;
-    private Long bulstat;
+    private LocalDateTime addDate;
+    private ClientEnum clientEnum;
     private double price;
+    private PalletTypeEnum palletTypeEnum;
+    private Long countIssuedPallets;
+
 
     public SellsServiceModel() {
     }
@@ -62,21 +64,22 @@ public class SellsServiceModel {
         this.cartons = cartons;
     }
 
-    public LocalDate getAddDate() {
+
+    public LocalDateTime getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(LocalDate addDate) {
+    public void setAddDate(LocalDateTime addDate) {
         this.addDate = addDate;
     }
 
 
-    public Long getBulstat() {
-        return bulstat;
+    public ClientEnum getClientEnum() {
+        return clientEnum;
     }
 
-    public void setBulstat(Long bulstat) {
-        this.bulstat = bulstat;
+    public void setClientEnum(ClientEnum clientEnum) {
+        this.clientEnum = clientEnum;
     }
 
     public double getPrice() {
@@ -85,6 +88,22 @@ public class SellsServiceModel {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public PalletTypeEnum getPalletTypeEnum() {
+        return palletTypeEnum;
+    }
+
+    public void setPalletTypeEnum(PalletTypeEnum palletTypeEnum) {
+        this.palletTypeEnum = palletTypeEnum;
+    }
+
+    public Long getCountIssuedPallets() {
+        return countIssuedPallets;
+    }
+
+    public void setCountIssuedPallets(Long countIssuedPallets) {
+        this.countIssuedPallets = countIssuedPallets;
     }
 }
 

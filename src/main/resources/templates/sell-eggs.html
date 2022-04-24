@@ -35,10 +35,11 @@
       <select th:field="*{categoryCartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCartons" name="categoryCartons">
         <option value="">Избери амбалаж</option>
         <option th:each="a : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
-                th:text="${a}" th:value="${a}">CARTONS_120</option>
+                th:text="${a}" th:value="${a}"></option>
       </select>
       <small th:if="${#fields.hasErrors('categoryCartons')}" th:errors="*{categoryCartons}" class="text-danger">Category error message</small>
     </div>
+
 
     <div class="form-group">
       <div class="text-white label-holder d-flex justify-content-center">
@@ -66,20 +67,41 @@
       <input th:field="*{price}" th:errorclass="bg-danger" type=number step=0.01 class="form-control" id="price" name="price"/>
       <small th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Price error message</small>
     </div>
-
+    <div class="form-group">
+      <div class="text-white label-holder d-flex justify-content-center">
+        <label for="category" class="h4 mb-2">Клиент</label>
+      </div>
+      <select th:field="*{clientEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryClient" name="categoryBase">
+        <option value="">Избери клиент</option>
+        <option th:each="b : ${T(com.example.projectsoftuni.model.entity.enums.ClientEnum).values()}"
+                th:text="${b}" th:value="${b}"></option>
+      </select>
+      <small th:if="${#fields.hasErrors('clientEnum')}" th:errors="*{clientEnum}" class="text-danger">Category error message</small>
+    </div>
+    <div class="form-group">
+      <div class="text-white label-holder d-flex justify-content-center">
+        <label for="category" class="h4 mb-2">Вид палет</label>
+      </div>
+      <select th:field="*{palletTypeEnum}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryPallet" name="categoryBase">
+        <option value="">Избери вид палет</option>
+        <option th:each="b : ${T(com.example.projectsoftuni.model.entity.enums.PalletTypeEnum).values()}"
+                th:text="${b}" th:value="${b}"></option>
+      </select>
+      <small th:if="${#fields.hasErrors('palletTypeEnum')}" th:errors="*{palletTypeEnum}" class="text-danger">Category error message</small>
+    </div>
     <div class="form-group">
       <div class="label-holder text-white textCol d-flex justify-content-center">
-        <label for="bulstat" class="h4 mb-2">Булстат</label>
+        <label for="count" class="h4 mb-2">Брой палети</label>
       </div>
-      <input th:field="*{bulstat}" th:errorclass="bg-danger" type="number" step="0.1" class="form-control" id="bulstat" name="count"/>
-      <small th:if="${#fields.hasErrors('bulstat')}" th:errors="*{bulstat}" class="text-danger">Bulstat error message</small>
+      <input th:field="*{countIssuedPallets}" th:errorclass="bg-danger" type="number"  class="form-control" id="countOfIssuedPallets" name="count"/>
+      <small th:if="${#fields.hasErrors('countIssuedPallets')}" th:errors="*{countIssuedPallets}" class="text-danger">Count error message</small>
     </div>
 
     <div class="form-group">
       <div class="label-holder text-white textCol d-flex justify-content-center">
         <label for="neededBefore" class="h4 mb-2">Дата</label>
       </div>
-      <input th:field="*{addDate}" th:errorclass="bg-danger" type="date" class="form-control" id="neededBefore" name="neededBefore"/>
+      <input th:field="*{addDate}" th:errorclass="bg-danger" type="datetime-local" class="form-control" id="neededBefore" name="neededBefore"/>
       <small th:if="${#fields.hasErrors('addDate')}" th:errors="*{addDate}" class="text-danger">Needed before date error</small>
     </div>
 
@@ -90,5 +112,8 @@
 </main>
 
 <footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+<script>
+
+</script>
 </body>
 </html>

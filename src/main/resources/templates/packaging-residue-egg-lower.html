@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<head th:replace="fragments/fragment::head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>"Квинс-арго"ЕООД</title>
+    <link rel="stylesheet" href="/css/reset-css.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header th:replace="fragments/fragment::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Пакетиране на остатък, получен от добавяне на яйца от Долна База</span></h1>
+    <h1 class="text-center mt-2">XL: <span class="badge badge-pill badge-dark" th:text="*{XLLower}"></span></h1>
+    <h1 class="text-center mt-2">L: <span class="badge badge-pill badge-dark" th:text="*{LLower}"></span></h1>
+    <h1 class="text-center mt-2">M: <span class="badge badge-pill badge-dark" th:text="*{MLower}"></span></h1>
+    <h1 class="text-center mt-2">S: <span class="badge badge-pill badge-dark" th:text="*{SLower}"></span></h1>
+    <h1 class="text-center mt-2">H: <span class="badge badge-pill badge-dark" th:text="*{HLower}"></span></h1>
+
+    <form class="mx-auto w-25 bg-blur rounded" th:object="${residueOfExtractionBindingModel}" th:method="POST" th:action="@{/residue/packaging-lower}">
+
+        <div class="form-group">
+
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="categoryCarton" class="h4 mb-2">Вид кашон</label>
+            </div>
+            <select th:field="*{cartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCarton" name="category">
+                <option value="">Избери вид амбалаж</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
+                        th:text="${c}" th:value="${c}"></option>
+            </select>
+            <small th:if="${#fields.hasErrors('cartons')}" th:errors="*{cartons}" class="text-danger">Type of carton error message</small>
+        </div>
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="categoryCarton" class="h4 mb-2">Категория</label>
+            </div>
+            <select th:field="*{categoryEgg}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryEgg" name="category">
+                <option value="">Избери вид амбалаж</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryEggEnum).values()}"
+                        th:text="${c}" th:value="${c}"></option>
+            </select>
+            <small th:if="${#fields.hasErrors('categoryEgg')}" th:errors="*{categoryEgg}" class="text-danger">Type of carton error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="countOfCarton" class="h4 mb-2">Брой</label>
+            </div>
+            <input th:field="*{countOfEgg}" th:errorclass="bg-danger" type="number" step="0.1" class="form-control" id="countOfCarton" name="count"/>
+            <small th:if="${#fields.hasErrors('countOfEgg')}" th:errors="*{countOfEgg}" class="text-danger">Count error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="categoryCarton" class="h4 mb-2">Вид кори</label>
+            </div>
+            <select th:field="*{coreyInCartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCartons" name="category">
+                <option value="">Избери вид амбалаж</option>
+                <option th:each="c : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
+                        th:text="${c}" th:value="${c}"></option>
+            </select>
+            <small th:if="${#fields.hasErrors('coreyInCartons')}" th:errors="*{coreyInCartons}" class="text-danger">Type of carton error message</small>
+        </div>
+
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Добави</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="fragments/fragment::footer" class="footer bg-transparent  py-2"></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragment::head"></head>
+<meta charset="UTF-8"/>
+<body>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Продажбата е неуспешна ! Бройката въведена за продажба съвпада на
+        <br>
+        половин кашон/кора от съответната категория !</span></h1>
+    <br>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark"> Натисни <a th:href="@{/egg/validation}">тук</a>
+    за да се върнете към меню продажби.</span></h1>
+    <br>
+</main>
+</body>
+</html>

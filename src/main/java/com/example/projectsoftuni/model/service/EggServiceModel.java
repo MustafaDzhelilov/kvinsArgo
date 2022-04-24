@@ -22,6 +22,7 @@ public class EggServiceModel {
     private CategoryBaseEnum base;
     private Long countOfEgg;
     private CategoryCartonsEnum cartons;
+    private CategoryCartonsEnum coreyInCartons;
     private CategoryHaleEnum hale;
     private LocalDate addDate;
 
@@ -82,5 +83,13 @@ public class EggServiceModel {
 
     public void setAddDate(LocalDate addDate) {
         this.addDate = addDate;
+    }
+
+    public CategoryCartonsEnum getCoreyInCartons() {
+        return coreyInCartons;
+    }
+
+    public void setCoreyInCartons(CategoryCartonsEnum coreyInCartons) {
+        this.coreyInCartons = coreyInCartons;
     }
 }

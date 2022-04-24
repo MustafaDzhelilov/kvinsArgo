@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>"Квинс-арго"ЕООД</title>
+  <style>
+    body {margin:0;font-family:Arial}
+
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    .topnav a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .active {
+      background-color: red;
+      color: white;
+    }
+
+    .topnav .icon {
+      display: none;
+    }
+
+    .dropdown {
+      float: left;
+      overflow: hidden;
+    }
+
+    .dropdown .dropbtn {
+      font-size: 17px;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 16px;
+      background-color: inherit;
+      font-family: inherit;
+      margin: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      float: none;
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+
+    .topnav a:hover, .dropdown:hover .dropbtn {
+      background-color: #555;
+      color: white;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    @media screen and (max-width: 600px) {
+      .topnav a:not(:first-child), .dropdown .dropbtn {
+        display: none;
+      }
+      .topnav a.icon {
+        float: right;
+        display: block;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .topnav.responsive {
+        position: relative;
+      }
+
+      .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+
+      .topnav.responsive .dropdown {
+        float: none;
+      }
+
+      .topnav.responsive .dropdown-content {
+        position: relative;
+      }
+
+      .topnav.responsive .dropdown .dropbtn {
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+    #myInput {
+      background-image: url('');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+
+    #myTable {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+      font-size: 18px;
+    }
+
+    #myTable th, #myTable td {
+      text-align: left;
+      padding: 12px;
+    }
+
+    #myTable tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header, #myTable tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+<header >
+  <div class="topnav" id="myTopnav">
+    <a  class="nav-link text-white active h5" th:href="@{/home}" sec:authorize="isAuthenticated()">Квинс агро ЕООД</a>
+    <a  class="nav-link text-white  h5" th:href="@{/admin/all-users}" sec:authorize="hasRole('ADMIN')">Админ панел</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Продажби
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a   th:href="@{/egg/validation}" sec:authorize="hasRole('ADMIN')">Вътрешен пазар</a>
+        <a   th:href="@{/egg/export}" sec:authorize="hasRole('ADMIN')">Износ</a>
+        <a   th:href="@{/egg/sell-from-packaging}" sec:authorize="hasRole('ADMIN')">От пакетаж</a>
+
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Приспадане
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a   th:href="@{/hales/delete}" sec:authorize="hasRole('ADMIN')">Оптисване кокошки</a>
+        <a   th:href="@{/eaten/consuming}" sec:authorize="hasRole('ADMIN')">Конс. фураж</a>
+        <a   th:href="@{/material/add_base}" sec:authorize="hasRole('ADMIN')">Разпределяне на материали по бази</a>
+        <a   th:href="@{/material/subtraction}" sec:authorize="hasRole('ADMIN')">Изписване на материали от база</a>
+        <a   th:href="@{/fodder/add}" sec:authorize="hasRole('ADMIN')">Разпределяне на фураж по силози</a>
+
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Добавяне
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a   th:href="@{/products/add}" sec:authorize="hasRole('ADMIN')">Добавяне на яйца</a>
+        <a   th:href="@{/residue/packaging-lower}" sec:authorize="hasRole('ADMIN')">Изчистване на остатък ДБ</a>
+        <a   th:href="@{/residue/packaging-upper}" sec:authorize="hasRole('ADMIN')">Изчистване на остатък ГБ</a>
+        <a   th:href="@{/hales/add}" sec:authorize="hasRole('ADMIN')">Добавяне на кокошки</a>
+        <a   th:href="@{/cartons/add-cartons}" sec:authorize="hasRole('ADMIN')">Добавяне на амбалаж</a>
+        <a   th:href="@{/clients/add-client}" sec:authorize="hasRole('ADMIN')">Добавяне на клиент</a>
+        <a   th:href="@{/fodder/add-main}" sec:authorize="hasRole('ADMIN')">Добавяне на фураж</a>
+        <a  th:href="@{/material/add}" sec:authorize="hasRole('ADMIN')">Добавяне на материали</a>
+        <a  th:href="@{/pallets-count/add}" sec:authorize="hasRole('ADMIN')">Добавяне на палети</a>
+        <a  th:href="@{/pallets-count/transfer}" sec:authorize="hasRole('ADMIN')">Прехвърляне на палети м/у бази</a>
+        <a  th:href="@{/cartons/transfer-cartons}" sec:authorize="hasRole('ADMIN')">Прехвърляне на амбалаж м/у бази</a>
+
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Заявки
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a  th:href="@{/request/add}" sec:authorize="hasRole('ADMIN')">Създаване на зявка</a>
+        <a   th:href="@{/request/view}" sec:authorize="isAuthenticated()">Състояние на заявките</a>
+        <a   th:href="@{/request/all-requests}" sec:authorize="isAuthenticated()">Редактиране на заявките</a>
+
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Пакетаж
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a  th:href="@{/packing/add}" sec:authorize="isAuthenticated()">Прехвърляне към пакетаж</a>
+        <a  th:href="@{/packing/count-egg-before-packing}" sec:authorize="isAuthenticated()">Наличност преди пакетиране</a>
+        <a  th:href="@{/packing/count-egg-after-packing}" sec:authorize="isAuthenticated()">Наличност след пакетиране</a>
+        <a  th:href="@{/packing/create-new-product}" sec:authorize="isAuthenticated()">Пакетиране</a>
+        <a  th:href="@{/packing/history}" sec:authorize="isAuthenticated()">История</a>
+        <a  th:href="@{/packing/add-cartons-for-packaging}" sec:authorize="isAuthenticated()">Добавяне на амбалаж</a>
+        <a  th:href="@{/packing/count-carton-packing}" sec:authorize="isAuthenticated()">Наличност амбалаж в пакетаж</a>
+        <a  th:href="@{/packing/count-cartons-for-transfer}" sec:authorize="isAuthenticated()">Освободен амбалаж в пакетаж</a>
+        <a  th:href="@{/packing/transfer-carton-to-base}" sec:authorize="isAuthenticated()">Връщане на амбалаж по базите</a>
+        <a  th:href="@{/packing/sell-from-packaging-view}" sec:authorize="isAuthenticated()">Всички продажби направени от пакетаж</a>
+
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Справки
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a  th:href="@{/allCountTableByCategory}" sec:authorize="isAuthenticated()">Наличност</a>
+        <a  th:href="@{/count-hens-now}" sec:authorize="isAuthenticated()">Наличност кокошки</a>
+        <a   th:href="@{/count-cartons-now}" sec:authorize="isAuthenticated()">Наличност амбалаж</a>
+        <a   th:href="@{/percentage-table}" sec:authorize="isAuthenticated()">Процентна таблица</a>
+        <a   th:href="@{/egg/all-sells}" sec:authorize="isAuthenticated()">Всички продажби</a>
+        <a   th:href="@{/eaten/reference-consuming-lower}" sec:authorize="isAuthenticated()">Справка фураж ДБ</a>
+        <a   th:href="@{/eaten/reference-consuming-upper}" sec:authorize="isAuthenticated()">Справка фураж ГБ</a>
+        <a   th:href="@{/pallets-count/now}" sec:authorize="isAuthenticated()">Справка за палети по клиенти</a>
+        <a   th:href="@{/pallets-count/totalCount}" sec:authorize="isAuthenticated()">Справка за палети по бази</a>
+        <a   th:href="@{/material/now}" sec:authorize="isAuthenticated()">Справки за материали</a>
+        <a   th:href="@{/material/issued}" sec:authorize="isAuthenticated()">Справки за изразходени материали от-до</a>
+        <a   th:href="@{/cartons/issued}" sec:authorize="isAuthenticated()">Справки за изразходен амбалаж от-до</a>
+        <a   th:href="@{/search/sell}" sec:authorize="isAuthenticated()">Търси по категория от-до</a>
+        <a   th:href="@{/search/sell-view-with-client}" sec:authorize="isAuthenticated()">Търси по клиент от-до</a>
+        <a   th:href="@{/search/total-price}" sec:authorize="isAuthenticated()">Справка за продадена продукция в лв от-до по клиенти</a>
+        <a   th:href="@{/fodder/search-fodder}" sec:authorize="isAuthenticated()">Справка за получено количество фураж от-до</a>
+        <a   th:href="@{/fodder/free-space-in-all-silo}" sec:authorize="isAuthenticated()">Справка за налични кг и свободно място по силози</a>
+        <a   th:href="@{/fodder/last-eat}" sec:authorize="isAuthenticated()">Справка за последно хранене</a>
+      </div>
+    </div>
+    <a  class="nav-link text-white  h5" th:href="@{/users/logout}" sec:authorize="isAuthenticated()">Излез</a>
+  </div>
+</header>
+
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Търси по потребителско име.." title="Type in a name">
+
+<table id="myTable" >
+  <tr class="header">
+    <th style="width:33%;">База</th>
+    <th style="width:33%;">Брой евро палети</th>
+    <th style="width:33%;">Брой термо палети</th>
+  </tr>
+  <tr>
+    <td>Долна</td>
+    <td th:text="${countEuroLower}"></td>
+    <td th:text="${countThermoLower}"></td>
+  </tr>
+  <tr>
+    <td>Горна</td>
+    <td th:text="${countEuroUpper}"></td>
+    <td th:text="${countThermoUpper}"></td>
+  </tr>
+  <tr>
+    <td>Пакетаж</td>
+    <td th:text="${countEuroPackaging}"></td>
+    <td th:text="${countThermoPackaging}"></td>
+  </tr>
+</table>
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/fragment::head">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <header th:replace="fragments/fragment::nav"></header>
@@ -37,6 +38,18 @@
 
         <div class="form-group">
             <div class="text-white label-holder d-flex justify-content-center">
+                <label for="category" class="h4 mb-2">Вид използвани кори</label>
+            </div>
+            <select th:field="*{coreyInCartons}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryCorey" name="categoryCartons">
+                <option value="">Избери амбалаж</option>
+                <option th:each="a : ${T(com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum).values()}"
+                        th:text="${a}" th:value="${a}"></option>
+            </select>
+            <small th:if="${#fields.hasErrors('coreyInCartons')}" th:errors="*{coreyInCartons}" class="text-danger">Category error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
                 <label for="category" class="h4 mb-2">База</label>
             </div>
             <select th:field="*{categoryBase}" th:errorclass="bg-danger" class="browser-default custom-select" id="categoryBase" name="categoryBase">
@@ -57,6 +70,7 @@
                         th:text="${h}" th:value="${h}">FIRST</option>
             </select>
             <small th:if="${#fields.hasErrors('categoryHale')}" th:errors="*{categoryHale}" class="text-danger">Category error message</small>
+
         </div>
 
         <div class="form-group">
@@ -76,7 +90,12 @@
         </div>
 
         <div class="button-holder d-flex justify-content-center">
+            <th:block th:if="${areImported == false}">
             <button type="submit" class="btn btn-warning  mb-3" value="Register">Добави</button>
+            </th:block>
+            <th:block th:if="${areImported == true}">
+                <p class="myBackgroundColor">Всичко за деня е въведено.</p>
+            </th:block>
         </div>
     </form>
 </main>

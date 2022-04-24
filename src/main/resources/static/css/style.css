@@ -11,6 +11,7 @@
 body {
     background-image: url('https://bgregistar.com/res/objects/14827/page/1_Kvins%20Argo%20EOOD.jpg');
     width: 100%;
+    height: auto;
     background-position: center;
     background-attachment: fixed;
     background-size: cover;

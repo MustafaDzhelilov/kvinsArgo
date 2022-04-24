@@ -24,5 +24,4 @@ public interface HensAddRepository extends JpaRepository<Hale, Long> {
 
     List<Hale> findLastOrderByHaleAndCreated(CategoryHaleEnum hale, LocalDate created);
 
-
 }

@@ -2,6 +2,8 @@ package com.example.projectsoftuni.model.entity;
 
 import com.example.projectsoftuni.model.entity.enums.CategoryBaseEnum;
 import com.example.projectsoftuni.model.entity.enums.CategoryCartonsEnum;
+import com.example.projectsoftuni.model.entity.enums.CategoryPaperCornerEnum;
+import com.example.projectsoftuni.model.entity.enums.CategoryPaperSheetEnum;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -38,6 +40,7 @@ public class Cartons  extends  BaseEntity{
     public void setBase(CategoryBaseEnum base) {
         this.base = base;
     }
+
 
     @Column(name = "count", nullable = false)
     public Long getCount() {

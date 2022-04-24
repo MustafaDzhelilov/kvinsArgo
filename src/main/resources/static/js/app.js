@@ -15,7 +15,9 @@ function reloadSells() {
         '<td>'+sell.countOfEgg  +'</td>'  +
         '<td>'+sell.cartons  +'</td>'  +
         '<td>'+sell.addDate  +'</td>'  +
-        '<td>'+sell.client.firmName  +'</td>'  +
+        '<td>'+sell.clientEnum  +'</td>'  +
+        '<td>'+sell.price  +'</td>'  +
+        '<td>'+sell.totalPrice  +'</td>'  +
        ' <td>' +
            ' <button>Редактирай</button>' +
            ' <button>Изтрий</button>'+
